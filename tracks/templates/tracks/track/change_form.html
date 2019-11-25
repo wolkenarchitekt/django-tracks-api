@@ -1,0 +1,23 @@
+{% extends 'admin/change_form.html' %}
+
+{% load i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+	function play(url, event) {
+		event.preventDefault();
+
+		let audio = document.getElementById("tracks_audio");
+		audio.src = url;
+		audio.play();
+	}
+
+</script>
+{% endblock %}
+
+{% block content %}
+{{  block.super }}
+<audio style="position: fixed; left: 0; bottom: 0; width: 100%;" id="tracks_audio" controls>
+</audio>
+{% endblock %}
