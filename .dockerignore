@@ -1,0 +1,8 @@
+.venv/
+*.egg-info
+*.egg/
+*.pyc
+*.swp
+__pycache__
+.pytest_cache
+.idea
