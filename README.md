@@ -35,3 +35,4 @@ urlpatterns = [
     ...
 ]
 ```
+Run `python manage.py migrate` to create tracks API models.
