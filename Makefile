@@ -12,7 +12,7 @@ shell:
 	docker run -v $(PWD):/app -it --rm $(CONTAINER) bash
 
 test:
-	docker run -it -e DJANGO_SETTINGS_MODULE=tests.settings --rm $(CONTAINER) pytest
+	docker run -it -e DJANGO_SETTINGS_MODULE=tracks_api.tests.settings --rm $(CONTAINER) pytest
 
 lint:
 	docker run -it --rm $(CONTAINER) flake8
