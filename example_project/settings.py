@@ -3,8 +3,7 @@ SECRET_KEY = 'fake-key'
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.auth',
-    'tracks',
-    'tests',
+    'tracks_api',
 ]
 
 DATABASES = {
@@ -13,7 +12,3 @@ DATABASES = {
         'NAME': ':memory:',
     }
 }
-
-PASSWORD_HASHERS = (
-    'django.contrib.auth.hashers.MD5PasswordHasher',
-)

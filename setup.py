@@ -14,7 +14,7 @@ setup(
     license='GPL',
     author='Ingo Fischer',
     author_email='mail@ingofischer.de',
-    url='https://github.com/ifischer/django-tracks',
+    url='https://github.com/ifischer/django-tracks-api',
     packages=find_packages(),
     zip_safe=True,
     include_package_data=True,

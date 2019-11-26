@@ -1,5 +1,6 @@
 import pytest
-from tracks.models import Track
+
+from tracks_api.models import Track
 
 
 @pytest.mark.django_db

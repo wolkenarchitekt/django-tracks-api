@@ -1,9 +1,9 @@
-sudo: false
 language: python
+python:
+  - "3.7"
 install:
-  - pip install tox
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+  - pip install .
 script:
-  - tox
-env:
-  - "TOXENV=py34"
-  - "TOXENV=py27"
+  - pytest

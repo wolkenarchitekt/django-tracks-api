@@ -12,7 +12,7 @@ shell:
 	docker run -v $(PWD):/app -it --rm $(CONTAINER) bash
 
 test:
-	docker run -it -e DJANGO_SETTINGS_MODULE=tests.settings --rm $(CONTAINER) pytest --verbose --capture=no -p no:cacheprovider --ds=tests.settings /usr/local/lib/python3.7/site-packages/tests/
+	docker run -it -e DJANGO_SETTINGS_MODULE=tests.settings --rm $(CONTAINER) pytest
 
 lint:
 	docker run -it --rm $(CONTAINER) flake8
