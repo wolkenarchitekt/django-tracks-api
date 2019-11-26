@@ -1,6 +1,7 @@
 FROM python:3.7.4-slim
 
-ENV PYTHONUNBUFFERED="true"
+ENV PYTHONUNBUFFERED true
+ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /app
 
