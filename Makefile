@@ -12,6 +12,7 @@ build:
 clean:
 	-docker stop $(CONTAINER)
 	-docker rm $(CONTAINER)
+	rm -rf default.sqlite .venv build dist django_tracks.egg-info
 
 shell:
 	docker run -v $(PWD):/app -it --rm $(CONTAINER) bash
@@ -34,6 +35,3 @@ virtualenv-create:
 	$(VIRTUALENV_DIR)/bin/pip install -r requirements-dev.txt
 	$(VIRTUALENV_DIR)/bin/pip install -e .
 	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
-
-clean:
-	rm -rf default.sqlite .venv build dist django_tracks.egg-info
