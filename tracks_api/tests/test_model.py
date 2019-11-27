@@ -4,8 +4,7 @@ from tracks_api.models import Track
 
 
 @pytest.mark.django_db
-def test_foo():
+def test_model():
     track = Track(artist='Foo', title='Bar')
     track.save()
-
-    print(f"Tracks: {Track.objects.count()}")
+    assert Track.objects.count() == 1
