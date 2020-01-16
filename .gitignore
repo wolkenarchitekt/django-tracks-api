@@ -13,3 +13,5 @@ build/
 .venv
 .mypy_cache
 
+# Tracks API sqlite databases
+db/

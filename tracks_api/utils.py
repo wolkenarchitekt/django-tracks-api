@@ -1,9 +1,19 @@
+import tempfile
 import logging
 import os
 from os import DirEntry
 from typing import List
 
 logger = logging.getLogger(__name__)
+
+
+""" World readable TemporaryFile """
+def UmaskNamedTemporaryFile(*args, **kargs) -> tempfile.NamedTemporaryFile:
+    fdesc = tempfile.NamedTemporaryFile(*args, **kargs)
+    umask = os.umask(0)
+    os.umask(umask)
+    os.chmod(fdesc.name, 0o666 & ~umask)
+    return fdesc
 
 
 def scantree(path) -> List[DirEntry]:
@@ -13,15 +23,3 @@ def scantree(path) -> List[DirEntry]:
             yield from scantree(entry.path)
         else:
             yield entry
-
-
-def import_tracks(music_dir: str):
-    files = [file for file in scantree(music_dir)]
-
-    if not files:
-        logger.warning(f"No files found in dir: {music_dir}")
-    else:
-        logger.info(f"Got {len(files)} files")
-
-        for file in files:
-            print(file.path, file.name)

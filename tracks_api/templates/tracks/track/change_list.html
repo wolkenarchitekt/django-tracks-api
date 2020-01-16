@@ -1,0 +1,21 @@
+{% extends 'admin/change_list.html' %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+	function play(url, event) {
+		event.preventDefault();
+
+		let audio = document.getElementById("rivamp_audio");
+		audio.src = url;
+		audio.play();
+	}
+
+</script>
+{% endblock %}
+
+{% block content %}
+{{  block.super }}
+<audio style="position: fixed; left: 0; bottom: 0; width: 100%;" id="rivamp_audio" controls>
+</audio>
+{% endblock %}
