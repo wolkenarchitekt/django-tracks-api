@@ -15,7 +15,8 @@ class TrackAdmin(admin.ModelAdmin):
         "title",
         "bpm",
         "key",
-        "formatted_duration",
+        "duration_formatted",
+        "bitrate_formatted",
         "file",
     )
 
@@ -23,11 +24,15 @@ class TrackAdmin(admin.ModelAdmin):
 
     search_fields = ("artist", "title")
 
-    def formatted_duration(self, obj):
+    def duration_formatted(self, obj):
         td = datetime.timedelta(seconds=int(obj.duration))
         return td
+    duration_formatted.short_description = "Duration"
 
-    formatted_duration.short_description = "Duration"
+    def bitrate_formatted(self, obj):
+        return f"{int(obj.bitrate / 1000)}K"
+
+    bitrate_formatted.short_description = "Bitrate"
 
     change_form_template = 'tracks/track/change_form.html'
     change_list_template = 'tracks/track/change_list.html'
