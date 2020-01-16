@@ -15,6 +15,7 @@ class TrackAdmin(admin.ModelAdmin):
         "title",
         "bpm",
         "key",
+        "rating_formatted",
         "duration_formatted",
         "bitrate_formatted",
         "file",
@@ -36,6 +37,12 @@ class TrackAdmin(admin.ModelAdmin):
     def bitrate_formatted(self, obj):
         return f"{int(obj.bitrate / 1000)}K"
     bitrate_formatted.short_description = "Bitrate"
+
+    def rating_formatted(self, obj):
+        rating = obj.ratings.first()
+        if rating:
+            return rating.rating
+    rating_formatted.short_description = "Rating"
 
     def audio_tag(self, obj):
         url = urljoin('/media/', obj.file.url)
