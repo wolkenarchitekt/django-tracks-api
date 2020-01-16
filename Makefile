@@ -8,8 +8,7 @@ HOST_UID = $(shell id -u)
 HOST_GID = $(shell id -g)
 
 DOCKER_VOLUMES = -v $(PWD):/app -v $(MUSIC_DIR):/media/music -v images:/media/images -v /home/ifischer/src/mediafile:/mediafile -v /app/static
-DOCKER_ENV = -e DJANGO_SETTINGS_MODULE=tracks_site.settings -e FIXTURE_DIR=/music
-#DOCKER_ENV = -e DJANGO_SETTINGS_MODULE=tracks_site.settings -e FIXTURE_DIR=/music
+DOCKER_ENV = -e DJANGO_SETTINGS_MODULE=tracks_site.settings -e FIXTURE_DIR=/media/music
 DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
 DOCKER_TEST_CMD = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_NAME)
 DOCKER_DEV_CMD  = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_NAME)

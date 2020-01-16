@@ -21,8 +21,12 @@ class TrackAdmin(admin.ModelAdmin):
     )
 
     list_display_links = ('artist',)
-
     search_fields = ("artist", "title")
+    change_form_template = 'tracks/track/change_form.html'
+    change_list_template = 'tracks/track/change_list.html'
+
+    def get_ordering(self, request):
+        return ['-file_mtime', ]
 
     def duration_formatted(self, obj):
         td = datetime.timedelta(seconds=int(obj.duration))
@@ -31,11 +35,7 @@ class TrackAdmin(admin.ModelAdmin):
 
     def bitrate_formatted(self, obj):
         return f"{int(obj.bitrate / 1000)}K"
-
     bitrate_formatted.short_description = "Bitrate"
-
-    change_form_template = 'tracks/track/change_form.html'
-    change_list_template = 'tracks/track/change_list.html'
 
     def audio_tag(self, obj):
         url = urljoin('/media/', obj.file.url)
@@ -48,9 +48,6 @@ class TrackAdmin(admin.ModelAdmin):
             url = urljoin(settings.MEDIA_ROOT, image.image.url)
             return format_html(f'<a href="{url}"><img src="{url}" width="64"/></a>')
     image_tag.short_description = 'Image'
-
-    def get_ordering(self, request):
-        return ['-file_mtime', ]  # sort case insensitive
 
 
 admin.site.site_header = "Django Tracks API"
