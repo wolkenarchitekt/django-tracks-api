@@ -49,8 +49,9 @@ def import_track(file: os.DirEntry):
     if created or track_was_updated:
         for email in mf.popm.keys():
             rating, _ = TrackRating.objects.update_or_create(track=track, email=email)
-            rating.rating = mf.popm[email]['rating'],
+            rating.rating = mf.popm[email]['rating']
             rating.count = mf.popm[email]['count']
+            rating.save()
 
         track.file_mtime = mtime_timestamp
         track.save(update_fields=['file_mtime'])
