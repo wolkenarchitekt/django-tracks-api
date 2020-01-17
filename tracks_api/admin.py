@@ -58,7 +58,7 @@ class TrackAdmin(admin.ModelAdmin):
     def rating_formatted(self, obj):
         rating = obj.ratings.first()
         if rating:
-            return rating.rating
+            return int(rating.rating / 51)
 
     rating_formatted.short_description = "Rating"
 
