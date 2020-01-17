@@ -10,11 +10,13 @@ from tracks_api.models import Track
 
 class ReadonlyTextWidget(forms.Widget):
     def render(self, name, value, attrs=None, renderer=None):
-        return format_html(f"""<div class='readonly'>{value}</div>""")
+        return format_html(f"""<div class="readonly">{value}</div>""")
 
 
 class TrackForm(forms.ModelForm):
-    duration_formatted = forms.CharField(widget=ReadonlyTextWidget, required=False)
+    duration_formatted = forms.CharField(
+        widget=ReadonlyTextWidget, required=False, label="Duration"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
