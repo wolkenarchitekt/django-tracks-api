@@ -3,8 +3,7 @@ Django==2.2.6
 djangorestframework==3.10.3
 mutagen==1.43
 Pillow==6.2.0
-#git+git://github.com/ifischer/mediafile.git#egg=mediafile
-#./mediafile
+git+git://github.com/ifischer/mediafile.git#egg=mediafile
 
 # For beets Beatport plugin
 requests==2.22.0
