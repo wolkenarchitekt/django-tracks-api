@@ -4,13 +4,35 @@ from urllib.parse import urljoin
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.db import models
+from django.forms import widgets
 from django.utils.html import format_html
-from tracks_api.models import Track
+from tracks_api.models import Track, TrackImage
 
 
 class ReadonlyTextWidget(forms.Widget):
     def render(self, name, value, attrs=None, renderer=None):
         return format_html(f"""<div class="readonly">{value}</div>""")
+
+
+class TrackImageInline(admin.StackedInline):
+    fields = (
+        "image_tag",
+        "desc",
+    )
+    model = TrackImage
+    readonly_fields = ("image_tag", "desc")
+    extra = 0
+
+    formfield_overrides = {
+        models.TextField: {"widget": widgets.Textarea(attrs={"rows": 1})}
+    }
+
+    def image_tag(self, obj: TrackImage):
+        url = urljoin(settings.MEDIA_ROOT, obj.image.url)
+        return format_html(f'<div><img style="width: 50%" src="{url}"/>')
+
+    image_tag.short_description = "Image"
 
 
 class TrackForm(forms.ModelForm):
@@ -59,6 +81,9 @@ class TrackAdmin(admin.ModelAdmin):
         "key",
         "duration_formatted",
     )
+    inlines = [
+        TrackImageInline,
+    ]
 
     def get_ordering(self, request):
         return ["-file_mtime"]
