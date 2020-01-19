@@ -9,12 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture(scope='session')
-def mp3_file(tmp_path) -> Path:
+def mp3_file(tmpdir_factory) -> Path:
     """ Generate a valid MP3 file using ffmpeg """
     duration = 5
-    # from ipdb import set_trace; set_trace()
-    # tmpdir_factory.mktemp('music').join()
-    fd, path = tempfile.mkstemp(dir=tmp_path, suffix='.mp3')
+    path = tmpdir_factory.mktemp('data').join('test.mp3')
 
     subprocess.run(
         [
