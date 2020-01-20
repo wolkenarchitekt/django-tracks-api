@@ -7,16 +7,17 @@ export
 HOST_UID = $(shell id -u)
 HOST_GID = $(shell id -g)
 
-DOCKER_VOLUMES = -v $(PWD):/app -v $(MUSIC_DIR):/media/music -v images:/media/images -v /app/static
+DOCKER_VOLUMES = -v $(PWD):/app -v $(MUSIC_DIR):/media/music -v images:/media/images -v /app/static -v /app/tests/fixtures/music
 DOCKER_ENV = -e DJANGO_SETTINGS_MODULE=tracks_site.settings -e FIXTURE_DIR=/media/music
 DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
-DOCKER_TEST_CMD = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_NAME)
-DOCKER_DEV_CMD  = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_NAME)
+DOCKER_WO_PORTS = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_NAME)
+DOCKER_W_PORTS  = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_NAME)
 
 TRACKS_DB = db/tracks.sqlite
 
 build:
 	docker build -t $(DOCKER_NAME) .
+	$(DOCKER_WO_PORTS) python manage.py create_adminuser
 
 clean:
 	find . \! -user $(USER) -exec sudo chown $(USER) {} \;
@@ -26,16 +27,16 @@ clean:
 	-rm tracks_api/migrations/0*.py
 
 shell:
-	$(DOCKER_TEST_CMD) bash
+	$(DOCKER_WO_PORTS) bash
 
 test:
-	$(DOCKER_TEST_CMD) pytest
+	$(DOCKER_WO_PORTS) pytest
 
 lint:
-	$(DOCKER_TEST_CMD) flake8
+	$(DOCKER_WO_PORTS) flake8
 
 mypy:
-	$(DOCKER_TEST_CMD) pytest --mypy
+	$(DOCKER_WO_PORTS) pytest --mypy
 
 virtualenv-create:
 	python3.7 -m venv $(VIRTUALENV_DIR)
@@ -46,17 +47,17 @@ virtualenv-create:
 	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
 
 import:
-	$(DOCKER_TEST_CMD) python manage.py import /media/music
+	$(DOCKER_WO_PORTS) python manage.py import /media/music
 
 migrate:
-	$(DOCKER_TEST_CMD) python manage.py makemigrations
-	$(DOCKER_TEST_CMD) python manage.py migrate
+	$(DOCKER_WO_PORTS) python manage.py makemigrations
+	$(DOCKER_WO_PORTS) python manage.py migrate
 
 runserver:
-	$(DOCKER_DEV_CMD) python manage.py runserver 0.0.0.0:8000
+	$(DOCKER_W_PORTS) python manage.py runserver 0.0.0.0:8000
 
 django-shell:
-	$(DOCKER_TEST_CMD) python manage.py shell_plus
+	$(DOCKER_WO_PORTS) python manage.py shell_plus
 
 sqlite:
 	$(DOCKER_WO_PORTS) sqlite3 $(TRACKS_DB)
