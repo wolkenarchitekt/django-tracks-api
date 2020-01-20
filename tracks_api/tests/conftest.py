@@ -1,20 +1,19 @@
-import os
-from django.conf import settings
 import logging
+import os
 import subprocess
-import tempfile
 from pathlib import Path
 
 import pytest
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def mp3_file() -> Path:
     """ Generate a valid MP3 file using ffmpeg """
     duration = 5
-    path = os.path.join(settings.MEDIA_ROOT, 'test.mp3')
+    path = os.path.join(settings.MEDIA_ROOT, "test.mp3")
 
     subprocess.run(
         [
@@ -32,11 +31,11 @@ def mp3_file() -> Path:
             "libmp3lame",
             f"{path}",
         ],
-        check=True
+        check=True,
     )
     return Path(path)
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def cleanup_files():
     yield
