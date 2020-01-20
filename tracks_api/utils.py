@@ -1,15 +1,15 @@
 import logging
-import tempfile
-import logging
 import os
+import tempfile
 from os import DirEntry
-from typing import List
+from tempfile import _TemporaryFileWrapper  # type: ignore
+from typing import Generator
 
 logger = logging.getLogger(__name__)
 
 
-""" World readable TemporaryFile """
-def UmaskNamedTemporaryFile(*args, **kargs) -> tempfile.NamedTemporaryFile:
+def UmaskNamedTemporaryFile(*args, **kargs) -> _TemporaryFileWrapper:
+    """ World readable TemporaryFile """
     fdesc = tempfile.NamedTemporaryFile(*args, **kargs)
     umask = os.umask(0)
     os.umask(umask)
@@ -17,7 +17,7 @@ def UmaskNamedTemporaryFile(*args, **kargs) -> tempfile.NamedTemporaryFile:
     return fdesc
 
 
-def scantree(path) -> List[DirEntry]:
+def scantree(path) -> Generator[DirEntry, None, None]:
     """Recursively yield DirEntry objects for given directory."""
     for entry in os.scandir(path):
         if entry.is_dir(follow_symlinks=False):

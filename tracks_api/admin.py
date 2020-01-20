@@ -32,7 +32,7 @@ class TrackImageInline(admin.StackedInline):
         url = urljoin(settings.MEDIA_ROOT, obj.image.url)
         return format_html(f'<div><img style="width: 50%" src="{url}"/>')
 
-    image_tag.short_description = "Image"
+    image_tag.short_description = "Image"  # type: ignore
 
 
 class TrackForm(forms.ModelForm):
@@ -92,25 +92,25 @@ class TrackAdmin(admin.ModelAdmin):
         td = datetime.timedelta(seconds=int(obj.duration))
         return td
 
-    duration_formatted.short_description = "Duration"
+    duration_formatted.short_description = "Duration"  # type: ignore
 
     def bitrate_formatted(self, obj):
         return f"{int(obj.bitrate / 1000)}K"
 
-    bitrate_formatted.short_description = "Bitrate"
+    bitrate_formatted.short_description = "Bitrate"  # type: ignore
 
     def rating_formatted(self, obj):
         rating = obj.ratings.first()
         if rating:
             return int(rating.rating / 51)
 
-    rating_formatted.short_description = "Rating"
+    rating_formatted.short_description = "Rating"  # type: ignore
 
     def audio_tag(self, obj):
         url = urljoin(settings.MEDIA_ROOT, obj.file.url)
         return format_html(f"""<button onclick="play(`{url}`, event)">Play</button>""")
 
-    audio_tag.short_description = "Audio"
+    audio_tag.short_description = "Audio"  # type: ignore
 
     def image_tag(self, obj: Track):
         image = obj.images.first()
@@ -118,7 +118,7 @@ class TrackAdmin(admin.ModelAdmin):
             url = urljoin(settings.MEDIA_ROOT, image.image.url)
             return format_html(f'<a href="{url}"><img src="{url}" width="64"/></a>')
 
-    image_tag.short_description = "Image"
+    image_tag.short_description = "Image"  # type: ignore
 
 
 admin.site.site_header = "Django Tracks API"
