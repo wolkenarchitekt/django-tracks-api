@@ -63,11 +63,20 @@ LOGGING = {
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
+        "sql": {
+            "()": "tracks_api.utils.SQLFormatter",
+            "format": "[%(duration).3f] %(statement)s",
+        },
     },
     'handlers': {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+        },
+        "sql": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "sql",
         },
     },
     'loggers': {
@@ -75,5 +84,10 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        "django.db.backends": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
     }}
