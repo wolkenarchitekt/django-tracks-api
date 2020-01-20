@@ -1,3 +1,5 @@
+import os
+
 SECRET_KEY = 'fake-key'
 
 INSTALLED_APPS = [
@@ -12,3 +14,5 @@ DATABASES = {
         'NAME': ':memory:',
     }
 }
+
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/app/tests/fixtures/music/')

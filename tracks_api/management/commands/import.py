@@ -3,7 +3,7 @@ import os
 import sys
 
 from django.core.management.base import BaseCommand
-from tracks_api.tracks_import import import_tracks
+from tracks_api.tracks_import import import_tracks_to_db
 
 
 class Command(BaseCommand):
@@ -20,4 +20,4 @@ class Command(BaseCommand):
                 print(f"Path not found: {music_dir}")
                 sys.exit(1)
 
-            import_tracks(music_dir)
+            import_tracks_to_db(music_dir)

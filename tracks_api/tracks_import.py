@@ -12,9 +12,9 @@ from tracks_api.utils import scantree, UmaskNamedTemporaryFile
 logger = logging.getLogger(__name__)
 
 
-def import_track(file: os.DirEntry):
+def import_track_to_db(file: os.DirEntry):
+    """Import track to database using mediafile"""
     rel_file_path = os.path.relpath(file, settings.MEDIA_ROOT)
-    print(file.path)
 
     try:
         mf = mediafile.MediaFile(file.path)
@@ -34,6 +34,7 @@ def import_track(file: os.DirEntry):
         key=mf.initial_key,
         duration=mf.length,
         bitrate=mf.bitrate,
+        album=mf.album,
     )
     track_was_updated = track.file_mtime and track.file_mtime < mtime_timestamp
     track.file_mtime = mtime_timestamp
@@ -57,7 +58,8 @@ def import_track(file: os.DirEntry):
         track.save(update_fields=['file_mtime'])
 
 
-def import_tracks(music_dir: pathlib.Path):
+def import_tracks_to_db(music_dir: pathlib.Path):
+    """Import all tracks from given path"""
     files = [file for file in scantree(music_dir)]
 
     if not files:
@@ -66,6 +68,6 @@ def import_tracks(music_dir: pathlib.Path):
         logger.info(f"Got {len(files)} files")
 
         for file in files:
-            import_track(file)
+            import_track_to_db(file)
 
-        print(f"Found {Track.objects.count()} tracks")
+        logger.info(f"Found {Track.objects.count()} tracks")

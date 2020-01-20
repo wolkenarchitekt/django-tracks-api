@@ -42,12 +42,10 @@ class TrackForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["artist"].widget = admin.widgets.AdminTextareaWidget(
-            attrs={"rows": 1}
-        )
-        self.fields["title"].widget = admin.widgets.AdminTextareaWidget(
-            attrs={"rows": 1}
-        )
+        for field in ["artist", "title", "album"]:
+            self.fields[field].widget = admin.widgets.AdminTextareaWidget(
+                attrs={"rows": 1}
+            )
         instance: Track = kwargs["instance"]
         self.fields["duration_formatted"].initial = datetime.timedelta(
             seconds=int(instance.duration)
@@ -60,6 +58,7 @@ class TrackAdmin(admin.ModelAdmin):
         "audio_tag",
         "artist",
         "title",
+        "album",
         "bpm",
         "key",
         "rating_formatted",
@@ -78,8 +77,9 @@ class TrackAdmin(admin.ModelAdmin):
     fields = (
         "artist",
         "title",
-        "key",
+        "album",
         "duration_formatted",
+        "key",
     )
     inlines = [
         TrackImageInline,
