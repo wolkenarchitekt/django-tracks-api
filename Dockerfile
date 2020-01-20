@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONUNBUFFERED true
 ENV PYTHONDONTWRITEBYTECODE true
 
-RUN apt-get update && apt-get install -y git ffmpeg
+RUN apt-get update && apt-get install -y git ffmpeg sqlite3
 
 WORKDIR /app
 

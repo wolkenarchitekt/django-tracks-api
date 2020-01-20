@@ -57,3 +57,6 @@ runserver:
 
 django-shell:
 	$(DOCKER_TEST_CMD) python manage.py shell_plus
+
+sqlite:
+	$(DOCKER_WO_PORTS) sqlite3 $(TRACKS_DB)
