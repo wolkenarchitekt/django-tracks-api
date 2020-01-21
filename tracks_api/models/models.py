@@ -1,8 +1,6 @@
 import logging
 
 from django.db import models
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 
 logger = logging.getLogger(__name__)
 
@@ -56,23 +54,3 @@ class TrackImage(models.Model):
         return open(self.image.file.name, "rb").read()
 
 
-def update_id3(instance: Track):
-    """Update ID3 tags from Track instance"""
-    from mediafile import MediaFile
-
-    mf = MediaFile(instance.file.path)
-    mf.artist = instance.artist
-    mf.comment = instance.comment
-    mf.bpm = instance.bpm
-    mf.key = instance.key
-    mf.album = instance.album
-    mf.save()
-
-
-@receiver(pre_save, sender=Track)
-def update_track_receiver(sender, instance: Track, **kwargs):
-    track_was_updated = "update_fields" in kwargs
-    track_exists_in_db = instance.pk is not None
-
-    if track_was_updated and track_exists_in_db:
-        update_id3(instance=instance)

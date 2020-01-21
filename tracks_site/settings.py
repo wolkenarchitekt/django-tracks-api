@@ -68,7 +68,7 @@ LOGGING = {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
-            "formatter": "verbose",
+            "formatter": "simple",
         },
         "sql": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "sql"},
     },
