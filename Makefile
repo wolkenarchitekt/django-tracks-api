@@ -17,7 +17,6 @@ TRACKS_DB = db/tracks.sqlite
 
 build:
 	docker build -t $(DOCKER_NAME) .
-	$(DOCKER_WO_PORTS) python manage.py create_adminuser
 
 clean:
 	find . \! -user $(USER) -exec sudo chown $(USER) {} \;
@@ -52,6 +51,7 @@ import:
 migrate:
 	$(DOCKER_WO_PORTS) python manage.py makemigrations
 	$(DOCKER_WO_PORTS) python manage.py migrate
+	$(DOCKER_WO_PORTS) python manage.py create_adminuser
 
 runserver:
 	$(DOCKER_W_PORTS) python manage.py runserver 0.0.0.0:8000

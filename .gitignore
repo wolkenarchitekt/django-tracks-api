@@ -15,3 +15,6 @@ build/
 
 # Tracks API sqlite databases
 db/
+
+# Ignore migrations for now
+**/migrations/*
