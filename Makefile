@@ -18,6 +18,10 @@ TRACKS_DB = db/tracks.sqlite
 build:
 	docker build -t $(DOCKER_NAME) .
 
+config:
+	@env | grep MUSIC_DIR
+	@env | grep DOCKER_*
+
 clean:
 	find . \! -user $(USER) -exec sudo chown $(USER) {} \;
 	-docker stop $(DOCKER_NAME)
