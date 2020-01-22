@@ -7,8 +7,4 @@ class TrackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Track
-        fields = (
-            'pk',
-            'artist',
-            'title',
-        )
+        exclude = []
