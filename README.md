@@ -31,6 +31,12 @@ INSTALLED_APPS = (
 )
 ```
 
+Create Django admin user:
+
+```shell script
+python manage.py createsuperuser
+```
+
 Add Django tracks API's URL patterns:
 
 ```python
@@ -39,7 +45,7 @@ import tracks_api
 
 urlpatterns = [
     ...
-    url(r'^', include(tracks_api.urls)),
+    path("tracks/", include(tracks_api.urls.router.urls)),
     ...
 ]
 ```
