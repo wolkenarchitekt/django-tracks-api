@@ -1,6 +1,15 @@
-# Convert .env-file to makefile format and export all variables,
-# so they are accessible within make and also docker compose
-$(shell sed 's/=/ ?= /' .env > /tmp/.make_env)
+# Convert .env-file to makefile format and export all variables
+# to be accessible within make and shell commands
+# Variable precedence order:
+#   1) Environment variables
+#   2) .env.local
+#   3) .env
+ifneq ("$(wildcard .env.local)","")
+	output := $(shell sed 's/=/ ?= /' .env.local > /tmp/.make_env)
+endif
+$(shell sed 's/=/ ?= /' .env >> /tmp/.make_env)
+
+# Export variables from merged .env files
 include /tmp/.make_env
 export
 
