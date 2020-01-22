@@ -45,6 +45,12 @@ urlpatterns = [
 ```
 Run `python manage.py migrate` to create tracks API models.
 
+Run Django server:
+
+```shell script
+python manage.py runserver
+```
+
 Screenshots
 -----------
 
