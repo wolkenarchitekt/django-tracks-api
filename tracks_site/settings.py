@@ -5,6 +5,9 @@ SECRET_KEY = "fake-key"
 ROOT_URLCONF = "tracks_api.urls"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+if DEBUG:
+    ALLOWED_HOSTS = "*"
+
 INSTALLED_APPS = [
     "django_extensions",
     "django.contrib.admin",
