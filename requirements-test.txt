@@ -3,6 +3,5 @@ flake8==3.7.9
 mypy==0.740
 names==0.3.0
 pytest==5.2.2
-pytest-depends==0.8.1
 pytest-django==3.6.0
 pytest-mypy==0.4.1
