@@ -4,6 +4,14 @@
 
 A Django based REST API for your music tracks
 
+Features
+--------
+
+* import audio files (supports at least MP3, AAC, FLAC, OGG, ASF, AIFF) into Django DB.
+* Can read all audio tags that [Mediafile](https://github.com/beetbox/mediafile) supports 
+* Admin UI to list, show and filter tracks by tags
+* *In progress: Django REST framework powered API*
+
 Quickstart
 ----------
 
@@ -36,3 +44,8 @@ urlpatterns = [
 ]
 ```
 Run `python manage.py migrate` to create tracks API models.
+
+Screenshots
+-----------
+
+![alt text](doc/images/admin.png "Admin view")
