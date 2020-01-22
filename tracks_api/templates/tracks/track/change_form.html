@@ -3,8 +3,9 @@
 {% block extrahead %}
 {{ block.super }}
 <script>
-	function play(url, event) {
+	function play(url, track_name, event) {
 		event.preventDefault();
+		document.getElementById("track_name").textContent = track_name;
 
 		let audio = document.getElementById("rivamp_audio");
 		audio.src = url;
@@ -16,6 +17,9 @@
 
 {% block content %}
 {{  block.super }}
-<audio style="position: fixed; left: 0; bottom: 0; width: 100%;" id="rivamp_audio" controls>
+<div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: white;">
+    <p id="track_name"></p>
+    <audio style="width: 100%;" id="rivamp_audio" controls>
 </audio>
+</div>
 {% endblock %}
