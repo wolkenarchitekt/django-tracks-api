@@ -5,3 +5,4 @@ Pillow==7.0.0
 
 # Mediafile fork with popm
 git+git://github.com/ifischer/mediafile.git#egg=mediafile
+
