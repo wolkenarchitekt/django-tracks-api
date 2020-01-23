@@ -1,5 +1,4 @@
 import datetime
-import pathlib
 from dataclasses import dataclass
 
 
@@ -11,7 +10,7 @@ class TrackEntity:
     album: str
     bpm: int
     key: str
-    file: pathlib.Path
+    file: str
     duration: float
     file_mtime: datetime.datetime
     date_created = datetime.datetime

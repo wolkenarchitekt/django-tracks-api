@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - make build
+  - make build lint mypy
 
 script:
   - make test

@@ -1,8 +1,7 @@
 import logging
 
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
 from rest_framework.schemas import AutoSchema
-
 from tracks_api.models import Track
 from tracks_api.serializers import TrackSerializer
 

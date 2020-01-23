@@ -20,6 +20,6 @@ if settings.DEBUG:
         re_path(
             r"^media/(?P<path>.*)$",
             serve,
-            {"document_root": settings.MEDIA_ROOT, "show_indexes": True,},
+            {"document_root": settings.MEDIA_ROOT, "show_indexes": True, },
         ),
     ]

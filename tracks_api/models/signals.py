@@ -1,12 +1,11 @@
 import logging
-import pathlib
 
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from tracks_api.id3_utils import update_id3
 
-from .models import Track
 from ..entities import TrackEntity
+from .models import Track
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +17,7 @@ def track_model_to_entity(track: Track):
         album=track.album,
         bpm=track.bpm,
         key=track.key,
-        file=pathlib.Path(track.file.path),
+        file=track.file.path,
         duration=track.duration,
         file_mtime=track.file_mtime,
         comment=track.comment,

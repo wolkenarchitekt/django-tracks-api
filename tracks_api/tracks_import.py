@@ -18,7 +18,7 @@ def import_track_to_db(file: os.DirEntry):
 
     try:
         mf = mediafile.MediaFile(file.path)
-    except mediafile.FileTypeError:
+    except (mediafile.FileTypeError, mediafile.UnreadableFileError):
         logger.debug(f"Error reading tags from file '{file.path}'")
         return
 
@@ -40,7 +40,10 @@ def import_track_to_db(file: os.DirEntry):
     track.file_mtime = mtime_timestamp
 
     for image in mf.images:
-        image_extension = image.mime_type.split('image/')[-1]
+        if not image.mime_type:
+            logger.error(f"Invalid mimetype: {image}")
+            continue
+        image_extension = image.mime_type.split('/')[-1]
         track_image = TrackImage(track=track, desc=image.desc)
         image_file = UmaskNamedTemporaryFile(mode='wb', suffix=f'.{image_extension}')
         image_file.write(image.data)
@@ -48,13 +51,14 @@ def import_track_to_db(file: os.DirEntry):
         track_image.save()
 
     if created or track_was_updated:
-        for email in mf.popm.keys():
-            rating, _ = TrackRating.objects.update_or_create(track=track, email=email)
-            rating.rating = mf.popm[email]['rating']
-            rating.count = mf.popm[email]['count']
-            rating.save()
+        if mf.popm:
+            for email in mf.popm.keys():
+                rating, _ = TrackRating.objects.update_or_create(track=track, email=email)
+                rating.rating = mf.popm[email]['rating']
+                rating.count = mf.popm[email]['count']
+                rating.save()
 
-        track.file_mtime = mtime_timestamp
+            track.file_mtime = mtime_timestamp
         track.save(update_fields=['file_mtime'])
 
 

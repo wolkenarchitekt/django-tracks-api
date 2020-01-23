@@ -5,8 +5,8 @@ from tracks_api.entities import TrackEntity
 def update_id3(instance: TrackEntity):
     """Update ID3 tags from Track instance if changed"""
     modified = False
-    from ipdb import set_trace; set_trace()
-    mf = MediaFile(instance.file.path)
+
+    mf = MediaFile(instance.file)
 
     for attrib in ["artist", "title", "bpm", "key", "album"]:
         mf_value = getattr(mf, attrib)

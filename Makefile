@@ -59,5 +59,8 @@ runserver:
 django-shell:
 	$(DOCKER_WO_PORTS) python manage.py shell_plus
 
+django-urls:
+	$(DOCKER_WO_PORTS) python manage.py show_urls
+
 sqlite:
 	$(DOCKER_WO_PORTS) sqlite3 $(TRACKS_DB)

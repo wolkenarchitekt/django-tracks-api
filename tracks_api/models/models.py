@@ -52,5 +52,3 @@ class TrackImage(models.Model):
     @property
     def data(self):
         return open(self.image.file.name, "rb").read()
-
-

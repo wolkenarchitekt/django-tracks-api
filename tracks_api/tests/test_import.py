@@ -12,7 +12,7 @@ def test_import_files_to_db(mp3_file: Path):
     assert mp3_file.name == "test.mp3"
     assert mp3_file.exists()
     import_tracks_to_db(mp3_file.parent)
-    assert Track.objects.count() == 1
+    assert Track.objects.count()
 
 
 @pytest.mark.django_db

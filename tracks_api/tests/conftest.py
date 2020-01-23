@@ -1,6 +1,6 @@
 import logging
-import os
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import List
 
@@ -10,9 +10,7 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
-def create_mp3(filename, duration=5):
-    path = os.path.join(settings.MEDIA_ROOT, filename)
-
+def create_mp3(path: Path, duration=5):
     subprocess.run(
         [
             "/usr/bin/ffmpeg",
@@ -35,18 +33,20 @@ def create_mp3(filename, duration=5):
 
 
 @pytest.fixture(scope="session")
-def mp3_file(request) -> Path:
+def mp3_file(request, tmpdir_factory) -> Path:
     """ Generate a valid MP3 file using ffmpeg """
     filename = request.param
-    return create_mp3(filename)
+    return create_mp3(path=Path(filename))
 
 
 @pytest.fixture(scope="session")
-def mp3_files(request) -> List[Path]:
+def mp3_files(request, tmpdir_factory) -> List[Path]:
     """ Generate multiple MP3 files """
+    tmpdir = tmpdir_factory.mktemp(settings.MEDIA_ROOT)
     count = request.param
     paths = []
     for i in range(count):
-        filename = f"test{i}.mp3"
-        paths.append(create_mp3(filename))
+        tf = tempfile.NamedTemporaryFile(dir="/", suffix=".mp3")
+        path = Path(tmpdir.join(tf.name))
+        paths.append(create_mp3(path=path))
     return paths

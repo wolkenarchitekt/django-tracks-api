@@ -108,8 +108,9 @@ class TrackAdmin(admin.ModelAdmin):
 
     def audio_tag(self, obj):
         url = urljoin(settings.MEDIA_ROOT, obj.file.url)
+        params = f"play(`{url}`, `{obj.artist} - {obj.title}`"
         return format_html(
-            f"""<button onclick="play(`{url}`, `{obj.artist} - {obj.title}`, event)">Play</button>"""
+            f"""<button onclick="{params}, event)">Play</button>"""
         )
 
     audio_tag.short_description = "Audio"  # type: ignore
