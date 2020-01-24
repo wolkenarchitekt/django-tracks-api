@@ -28,6 +28,7 @@ def create_mp3(path: Path, duration=5):
             f"{path}",
         ],
         check=True,
+        capture_output=True,
     )
     return Path(path)
 
