@@ -25,6 +25,9 @@ clean:
 	rm -rf $(TRACKS_DB) .venv build dist django_tracks.egg-info
 	-rm tracks_api/migrations/0*.py
 
+format:
+	black tracks_api
+
 shell:
 	$(DOCKER_WO_PORTS) bash
 
