@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.db import models
 from django.forms import widgets
 from django.utils.html import format_html
+
 from tracks_api.models import Track, TrackImage
 
 
@@ -16,10 +17,7 @@ class ReadonlyTextWidget(forms.Widget):
 
 
 class TrackImageInline(admin.StackedInline):
-    fields = (
-        "image_tag",
-        "desc",
-    )
+    fields = ("image_tag", "desc")
     model = TrackImage
     readonly_fields = ("image_tag", "desc")
     extra = 0
@@ -28,7 +26,7 @@ class TrackImageInline(admin.StackedInline):
         models.TextField: {"widget": widgets.Textarea(attrs={"rows": 1})}
     }
 
-    def image_tag(self, obj: TrackImage):
+    def image_tag(self, obj: TrackImage, x=[]):
         url = urljoin(settings.MEDIA_ROOT, obj.image.url)
         return format_html(f'<div><img style="width: 50%" src="{url}"/>')
 
@@ -74,16 +72,8 @@ class TrackAdmin(admin.ModelAdmin):
     change_form_template = "tracks/track/change_form.html"
     change_list_template = "tracks/track/change_list.html"
     readonly_fields = ("key", "duration")
-    fields = (
-        "artist",
-        "title",
-        "album",
-        "duration_formatted",
-        "key",
-    )
-    inlines = [
-        TrackImageInline,
-    ]
+    fields = ("artist", "title", "album", "duration_formatted", "key")
+    inlines = [TrackImageInline]
 
     def get_ordering(self, request):
         return ["-file_mtime"]
@@ -109,9 +99,7 @@ class TrackAdmin(admin.ModelAdmin):
     def audio_tag(self, obj):
         url = urljoin(settings.MEDIA_ROOT, obj.file.url)
         params = f"play(`{url}`, `{obj.artist} - {obj.title}`"
-        return format_html(
-            f"""<button onclick="{params}, event)">Play</button>"""
-        )
+        return format_html(f"""<button onclick="{params}, event)">Play</button>""")
 
     audio_tag.short_description = "Audio"  # type: ignore
 

@@ -1,13 +1,13 @@
-from django.core.files.base import ContentFile
 import datetime
 import logging
 import os
 import pathlib
-from django.conf import settings
 
 import mediafile
-from tracks_api.models import Track, TrackRating, TrackImage
-from tracks_api.utils import scantree, UmaskNamedTemporaryFile
+from django.conf import settings
+from django.core.files.base import ContentFile
+from tracks_api.models import Track, TrackImage, TrackRating
+from tracks_api.utils import UmaskNamedTemporaryFile, scantree
 
 logger = logging.getLogger(__name__)
 
@@ -43,23 +43,27 @@ def import_track_to_db(file: os.DirEntry):
         if not image.mime_type:
             logger.error(f"Invalid mimetype: {image}")
             continue
-        image_extension = image.mime_type.split('/')[-1]
+        image_extension = image.mime_type.split("/")[-1]
         track_image = TrackImage(track=track, desc=image.desc)
-        image_file = UmaskNamedTemporaryFile(mode='wb', suffix=f'.{image_extension}')
+        image_file = UmaskNamedTemporaryFile(mode="wb", suffix=f".{image_extension}")
         image_file.write(image.data)
-        track_image.image.save(os.path.basename(image_file.name), ContentFile(image.data))
+        track_image.image.save(
+            os.path.basename(image_file.name), ContentFile(image.data)
+        )
         track_image.save()
 
     if created or track_was_updated:
         if mf.popm:
             for email in mf.popm.keys():
-                rating, _ = TrackRating.objects.update_or_create(track=track, email=email)
-                rating.rating = mf.popm[email]['rating']
-                rating.count = mf.popm[email]['count']
+                rating, _ = TrackRating.objects.update_or_create(
+                    track=track, email=email
+                )
+                rating.rating = mf.popm[email]["rating"]
+                rating.count = mf.popm[email]["count"]
                 rating.save()
 
             track.file_mtime = mtime_timestamp
-        track.save(update_fields=['file_mtime'])
+        track.save(update_fields=["file_mtime"])
 
 
 def import_tracks_to_db(music_dir: pathlib.Path):

@@ -1,11 +1,12 @@
 import logging
 
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from tracks_api.id3_utils import update_id3
 
 from ..entities import TrackEntity
 from .models import Track
+
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 logger = logging.getLogger(__name__)
 

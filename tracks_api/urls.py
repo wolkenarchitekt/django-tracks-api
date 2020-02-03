@@ -9,10 +9,7 @@ from tracks_api import views
 router = routers.DefaultRouter()
 router.register(r"tracks", views.TrackViewSet)
 
-urlpatterns = [
-    path("tracks/", include(router.urls)),
-    path("admin/", admin.site.urls),
-]
+urlpatterns = [path("tracks/", include(router.urls)), path("admin/", admin.site.urls)]
 
 # Serve with with nginx in production
 if settings.DEBUG:
@@ -20,6 +17,6 @@ if settings.DEBUG:
         re_path(
             r"^media/(?P<path>.*)$",
             serve,
-            {"document_root": settings.MEDIA_ROOT, "show_indexes": True, },
-        ),
+            {"document_root": settings.MEDIA_ROOT, "show_indexes": True},
+        )
     ]

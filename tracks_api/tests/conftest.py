@@ -4,6 +4,8 @@ import tempfile
 from pathlib import Path
 from typing import List
 
+from PIL import Image
+
 import pytest
 from django.conf import settings
 
@@ -34,6 +36,16 @@ def create_mp3(path: Path, duration=5):
 
 
 @pytest.fixture(scope="session")
+def image(tmpdir_factory) -> Path:
+    tmpdir = tmpdir_factory.mktemp(settings.MEDIA_ROOT)
+    tf = tempfile.NamedTemporaryFile(dir="/", suffix=".png")
+    img = Image.new("RGB", (60, 30), color=(73, 109, 137))
+    path = Path(tmpdir.join(tf.name))
+    img.save(path.name)
+    return path
+
+
+@pytest.fixture(scope="session")
 def mp3_file(request, tmpdir_factory) -> Path:
     """ Generate a valid MP3 file using ffmpeg """
     filename = request.param
@@ -46,7 +58,7 @@ def mp3_files(request, tmpdir_factory) -> List[Path]:
     tmpdir = tmpdir_factory.mktemp(settings.MEDIA_ROOT)
     count = request.param
     paths = []
-    for i in range(count):
+    for _ in range(count):
         tf = tempfile.NamedTemporaryFile(dir="/", suffix=".mp3")
         path = Path(tmpdir.join(tf.name))
         paths.append(create_mp3(path=path))

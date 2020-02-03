@@ -3,12 +3,12 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Create dummy admin user'
+    help = "Create dummy admin user"
 
     def handle(self, *args, **options):
-        if not User.objects.filter(username='admin').exists():
-            u = User(username='admin')
-            u.set_password('adminadmin')
+        if not User.objects.filter(username="admin").exists():
+            u = User(username="admin")
+            u.set_password("adminadmin")
             u.is_superuser = True
             u.is_staff = True
             u.save()

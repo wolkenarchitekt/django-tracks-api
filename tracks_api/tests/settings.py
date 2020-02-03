@@ -1,22 +1,17 @@
 import os
 
-SECRET_KEY = 'fake-key'
+SECRET_KEY = "fake-key"
 ROOT_URLCONF = "tracks_api.urls"
 
 INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.admin",
-    'django.contrib.contenttypes',
-    'django.contrib.auth',
-    'tracks_api',
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
+    "tracks_api",
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
-}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -28,7 +23,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/app/tests/fixtures/music/')
+MEDIA_ROOT = os.environ.get("MEDIA_ROOT", "/app/tests/fixtures/music/")
 
 TEMPLATES = [
     {
