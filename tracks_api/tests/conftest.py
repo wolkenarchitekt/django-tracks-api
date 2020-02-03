@@ -8,6 +8,9 @@ from PIL import Image
 
 import pytest
 from django.conf import settings
+from pytest_black import BlackItem
+from pytest_flake8 import Flake8Item
+from pytest_mypy import MypyItem
 
 logger = logging.getLogger(__name__)
 
@@ -63,3 +66,24 @@ def mp3_files(request, tmpdir_factory) -> List[Path]:
         path = Path(tmpdir.join(tf.name))
         paths.append(create_mp3(path=path))
     return paths
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--lint-only",
+        action="store_true",
+        default=False,
+        help="Only run linting checks",
+    )
+
+
+def pytest_collection_modifyitems(session, config, items):
+    if config.getoption("--lint-only"):
+        lint_items = []
+        if config.getoption("--flake8"):
+            lint_items.extend([item for item in items if type(item) == Flake8Item])
+        if config.getoption("--black"):
+            lint_items.extend([item for item in items if type(item) == BlackItem])
+        if config.getoption("--mypy"):
+            lint_items.extend([item for item in items if type(item) == MypyItem])
+        items[:] = lint_items

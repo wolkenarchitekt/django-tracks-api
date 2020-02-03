@@ -35,7 +35,7 @@ test:
 	$(DOCKER_WO_PORTS) pytest
 
 lint:
-	$(DOCKER_WO_PORTS) pytest --flake8 --black --mypy
+	$(DOCKER_WO_PORTS) pytest --lint-only --flake8 --black --mypy
 
 virtualenv-create:
 	python3.7 -m venv $(VIRTUALENV_DIR)
