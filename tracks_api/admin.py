@@ -26,7 +26,7 @@ class TrackImageInline(admin.StackedInline):
         models.TextField: {"widget": widgets.Textarea(attrs={"rows": 1})}
     }
 
-    def image_tag(self, obj: TrackImage, x=[]):
+    def image_tag(self, obj: TrackImage):
         url = urljoin(settings.MEDIA_ROOT, obj.image.url)
         return format_html(f'<div><img style="width: 50%" src="{url}"/>')
 
