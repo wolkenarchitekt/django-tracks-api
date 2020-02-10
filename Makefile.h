@@ -12,3 +12,6 @@ $(shell sed "s/=/ ?= /" .env >> /tmp/.make_env)
 # Export variables from merged .env files
 include /tmp/.make_env
 export
+
+HOST_UID = $(shell id -u)
+HOST_GID = $(shell id -g)

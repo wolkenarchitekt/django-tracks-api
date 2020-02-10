@@ -1,8 +1,5 @@
 include Makefile.h
 
-HOST_UID = $(shell id -u)
-HOST_GID = $(shell id -g)
-
 DOCKER_VOLUMES = -v $(PWD):/app -v $(MUSIC_DIR):/media/music -v images:/media/images -v /app/static -v /app/tests/fixtures/music
 DOCKER_ENV = -e DJANGO_SETTINGS_MODULE=tracks_site.settings
 DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
@@ -22,8 +19,8 @@ clean:
 	find . \! -user $(USER) -exec sudo chown $(USER) {} \;
 	-docker stop $(DOCKER_NAME)
 	-docker rm $(DOCKER_NAME)
-	rm -rf $(TRACKS_DB) .venv build dist django_tracks.egg-info
-	-rm tracks_api/migrations/0*.py
+	rm -rf $(TRACKS_DB) .venv build dist django_tracks.egg-info .mypy_cache .pytest_cache
+	rm -f tracks_api/migrations/0*.py
 
 format:
 	black tracks_api

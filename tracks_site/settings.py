@@ -80,7 +80,7 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },
-        "sql": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "sql"},
+        "sql": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "sql"},
     },
     "loggers": {
         "": {"handlers": ["console"], "level": "INFO", "propagate": True},
