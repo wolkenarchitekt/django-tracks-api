@@ -1,5 +1,6 @@
 Django==3.0.2
 djangorestframework==3.11.0
+gunicorn==19.9.0
 mutagen==1.43
 Pillow==7.0.0
 
