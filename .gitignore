@@ -21,3 +21,7 @@ db/
 
 # Local env files
 .env.local
+
+# Coverage
+.coverage
+
