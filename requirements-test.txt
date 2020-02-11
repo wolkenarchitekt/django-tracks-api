@@ -1,6 +1,7 @@
 # Requirements necessary on CI
 flake8==3.7.9
 flake8-bugbear==20.1.4
+flake8-debugger==3.2.1
 mypy==0.740
 names==0.3.0
 pytest==5.3.5
