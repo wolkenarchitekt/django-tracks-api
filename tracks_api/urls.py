@@ -3,6 +3,7 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.static import serve
+
 from rest_framework import routers
 from tracks_api import views
 
