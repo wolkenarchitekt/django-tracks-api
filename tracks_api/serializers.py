@@ -1,9 +1,9 @@
-from django.conf import settings
 from typing import List
 from urllib.parse import urljoin
 
-from rest_framework import serializers
+from django.conf import settings
 
+from rest_framework import serializers
 from tracks_api.models import Track
 
 

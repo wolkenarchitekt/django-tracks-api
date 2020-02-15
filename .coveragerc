@@ -1,0 +1,2 @@
+[run]
+omit = tracks_api/tests/*

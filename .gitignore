@@ -27,3 +27,6 @@ media/music
 media/images
 tracks.sqlite
 
+# Coverage
+.coverage
+

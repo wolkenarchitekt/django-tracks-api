@@ -33,6 +33,7 @@ virtualenv-create:
 	. $(VIRTUALENV_DIR)/bin/activate && \
 		pip install -r requirements.txt && \
         pip install -r requirements-dev.txt && \
+        pip install -r requirements-test.txt && \
         pip install .
 	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
 
