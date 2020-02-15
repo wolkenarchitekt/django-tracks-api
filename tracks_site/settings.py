@@ -20,8 +20,9 @@ INSTALLED_APPS = [
     "tracks_api",
 ]
 
+TRACKS_DB_FILE = os.environ.get("TRACKS_DB_FILE", os.path.join(BASE_DIR, "db/tracks.sqlite"))
 DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db/tracks.sqlite"}
+    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": TRACKS_DB_FILE}
 }
 
 MIDDLEWARE = [
@@ -53,12 +54,13 @@ TEMPLATES = [
 STATIC_URL = os.environ.get("STATIC_URL", "/static/")
 STATIC_ROOT = os.environ.get("STATIC_ROOT", os.path.join(BASE_DIR, "static"))
 
-MEDIA_ROOT = "/media/"
+MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+MEDIA_ROOT = os.environ.get("MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 50,
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'  # Use JSON for all test requests
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 50,
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",  # Use JSON for all test requests
 }
 
 LOGGING = {

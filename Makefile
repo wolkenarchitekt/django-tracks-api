@@ -1,19 +1,13 @@
 include Makefile.h
 
-DOCKER_VOLUMES = -v $(PWD):/app -v $(MUSIC_DIR):/media/music -v images:/media/images -v /app/static -v /app/tests/fixtures/music
-DOCKER_ENV = -e DJANGO_SETTINGS_MODULE=tracks_site.settings
-DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
-DOCKER_WO_PORTS = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_NAME)
-DOCKER_W_PORTS  = docker run --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_NAME)
-
-TRACKS_DB = db/tracks.sqlite
-
 build:
 	docker build -t $(DOCKER_NAME) .
 
 config:
 	@env | grep MUSIC_DIR
 	@env | grep DOCKER_*
+	@env | grep TRACKS_DB_FILE
+
 
 clean:
 	find . \! -user $(USER) -exec sudo chown $(USER) {} \;
@@ -42,13 +36,17 @@ virtualenv-create:
         pip install .
 	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
 
+virtualenv-import:
+	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
+	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
+
 import:
 	$(DOCKER_WO_PORTS) python manage.py import /media/music
 
 migrate:
-	$(DOCKER_WO_PORTS) python manage.py makemigrations
-	$(DOCKER_WO_PORTS) python manage.py migrate
-	$(DOCKER_WO_PORTS) python manage.py create_adminuser
+	$(DOCKER_WO_PORTS) bash -c "python manage.py makemigrations \
+		&& python manage.py migrate \
+		&& python manage.py create_adminuser"
 
 runserver:
 	$(DOCKER_W_PORTS) python manage.py runserver 0.0.0.0:8000

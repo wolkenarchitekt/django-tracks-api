@@ -6,6 +6,7 @@ import pathlib
 import mediafile
 from django.conf import settings
 from django.core.files.base import ContentFile
+
 from tracks_api.models import Track, TrackImage, TrackRating
 from tracks_api.utils import UmaskNamedTemporaryFile, scantree
 
