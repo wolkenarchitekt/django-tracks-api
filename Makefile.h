@@ -21,13 +21,3 @@ ENV_FILES=--env-file=.env
 ifneq ("$(wildcard .env.local)","")
 	ENV_FILES=--env-file=.env --env-file=.env.local
 endif
-
-DOCKER_VOLUMES = -v $(PWD):/app \
-	-v $(MUSIC_DIR):/media/music \
-	-v tracks_api_images:/media/images \
-	-v tracks_api_db:/db \
-	-v tracks_api_static:/static \
-	-v tracks_api_fixtures:/media/fixtures
-DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
-DOCKER_WO_PORTS = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_NAME)
-DOCKER_W_PORTS  = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_PORTS) $(DOCKER_NAME)
