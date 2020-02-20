@@ -20,7 +20,9 @@ INSTALLED_APPS = [
     "tracks_api",
 ]
 
-TRACKS_DB_FILE = os.environ.get("TRACKS_DB_FILE", os.path.join(BASE_DIR, "db/tracks.sqlite"))
+TRACKS_DB_FILE = os.environ.get(
+    "TRACKS_DB_FILE", os.path.join(BASE_DIR, "db/tracks.sqlite")
+)
 DATABASES = {
     "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": TRACKS_DB_FILE}
 }
