@@ -22,3 +22,4 @@ COPY . .
 
 RUN pip install .
 RUN python manage.py collectstatic --noinput
+
