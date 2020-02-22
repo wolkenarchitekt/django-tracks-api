@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class TrackViewSet(viewsets.ModelViewSet):
-    queryset = Track.objects.prefetch_related("images").order_by("track_id")
+    queryset = Track.objects.prefetch_related("images").order_by("-file_mtime")
     serializer_class = TrackSerializer
     schema = AutoSchema()
 
