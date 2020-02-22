@@ -12,5 +12,3 @@ class TrackViewSet(viewsets.ModelViewSet):
     queryset = Track.objects.prefetch_related("images").order_by("-file_mtime")
     serializer_class = TrackSerializer
     schema = AutoSchema()
-
-    paginate_by = 10
