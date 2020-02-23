@@ -1,15 +1,12 @@
 import os
 
-DEBUG = True
+DEBUG = "DEBUG" in os.environ
 SECRET_KEY = "fake-key"
 ROOT_URLCONF = "tracks_api.urls"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-if DEBUG:
-    ALLOWED_HOSTS = "*"
+ALLOWED_HOSTS = "*"
 
 INSTALLED_APPS = [
-    "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -19,6 +16,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "tracks_api",
 ]
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + ["django_extensions"]
 
 TRACKS_DB_FILE = os.environ.get(
     "TRACKS_DB_FILE", os.path.join(BASE_DIR, "db/tracks.sqlite")
