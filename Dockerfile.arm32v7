@@ -1,0 +1,27 @@
+FROM alpine AS qemu
+#QEMU Download
+ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
+RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
+
+FROM arm32v7/python:3.7.6-slim
+COPY --from=qemu qemu-aarch64-static /usr/bin
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV PYTHONUNBUFFERED true
+
+RUN apt-get update && apt-get install -y git ffmpeg sqlite3
+
+WORKDIR /app
+
+COPY requirements.txt ./
+
+# Suppress pip upgrade warning
+COPY pip.conf /root/.config/pip/pip.conf
+
+RUN pip install -r requirements.txt
+
+COPY . .
+
+RUN pip install .
+RUN python manage.py collectstatic --noinput
+
