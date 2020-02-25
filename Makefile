@@ -10,6 +10,10 @@ DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
 DOCKER_WO_PORTS = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_NAME)
 DOCKER_W_PORTS  = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_PORTS) $(DOCKER_NAME)
 
+DOCKER_TAG = rivamp/tracks-api:latest
+DOCKER_AMD_TAG = rivamp/tracks-api:latest-amd64
+DOCKER_ARM_TAG = rivamp/tracks-api:latest-arm32v7
+
 build:
 	docker build -t $(DOCKER_NAME) .
 
@@ -79,3 +83,35 @@ django-urls:
 
 sqlite:
 	$(DOCKER_WO_PORTS) sqlite3 $(TRACKS_DB)
+
+docker-buildx-setup:
+	-docker buildx rm mybuilder
+	-docker buildx create --name mybuilder
+	docker buildx use mybuilder
+	docker buildx inspect --bootstrap
+
+	# Linux only - run qemu container to support armv7 on Linux:
+	docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+
+	# Linux - Arm:
+	mkdir -p $(HOME)/.docker/cli-plugins/docker-buildx/
+	wget https://github.com/docker/buildx/releases/download/v0.2.0/buildx-v0.2.0.linux-arm-v7 \
+		-O $(HOME)/.docker/cli-plugins/docker-buildx/buildx-v0.2.0.linux-arm-v7
+
+docker-buildx:
+	docker build -t $(DOCKER_AMD_TAG) -f Dockerfile .
+	docker buildx build \
+		--push \
+		--platform linux/arm/v7 \
+		-t $(DOCKER_ARM_TAG) \
+		-f Dockerfile.arm32v7 .
+
+	docker push $(DOCKER_AMD_TAG)
+
+	-docker manifest create \
+		$(DOCKER_TAG) \
+		$(DOCKER_AMD_TAG) \
+		$(DOCKER_ARM_TAG)
+	docker manifest push $(DOCKER_TAG)
+
+	docker manifest inspect $(DOCKER_TAG)
