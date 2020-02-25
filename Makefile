@@ -51,6 +51,12 @@ virtualenv-import:
 	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
 	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
 
+virtualenv-collectstatic:
+	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
+
+virtualenv-runserver:
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
+
 import:
 	$(DOCKER_WO_PORTS) python manage.py import /media/music
 
@@ -58,6 +64,9 @@ migrate:
 	$(DOCKER_WO_PORTS) bash -c "python manage.py makemigrations \
 		&& python manage.py migrate \
 		&& python manage.py create_adminuser"
+
+collectstatic:
+	$(DOCKER_W_PORTS) python manage.py collectstatic --noinput
 
 runserver:
 	$(DOCKER_W_PORTS) python manage.py runserver 0.0.0.0:8000
