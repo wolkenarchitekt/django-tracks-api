@@ -30,3 +30,5 @@ tracks.sqlite
 # Coverage
 .coverage
 
+# Generated static files
+static/
