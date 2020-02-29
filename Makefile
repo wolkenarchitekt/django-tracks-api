@@ -42,25 +42,6 @@ test:
 lint:
 	$(DOCKER_WO_PORTS) pytest --lint-only --flake8 --black --mypy
 
-virtualenv-create:
-	python3.7 -m venv $(VIRTUALENV_DIR)
-	. $(VIRTUALENV_DIR)/bin/activate && \
-		pip install -r requirements.txt && \
-        pip install -r requirements-dev.txt && \
-        pip install -r requirements-test.txt && \
-        pip install .
-	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
-
-virtualenv-import:
-	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
-	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
-
-virtualenv-collectstatic:
-	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
-
-virtualenv-runserver:
-	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
-
 import:
 	$(DOCKER_WO_PORTS) python manage.py import /media/music
 
@@ -98,7 +79,7 @@ docker-buildx-setup:
 	wget https://github.com/docker/buildx/releases/download/v0.2.0/buildx-v0.2.0.linux-arm-v7 \
 		-O $(HOME)/.docker/cli-plugins/docker-buildx/buildx-v0.2.0.linux-arm-v7
 
-docker-buildx:
+docker-build:
 	docker build -t $(DOCKER_AMD_TAG) -f Dockerfile .
 	docker buildx build \
 		--push \
@@ -106,6 +87,7 @@ docker-buildx:
 		-t $(DOCKER_ARM_TAG) \
 		-f Dockerfile.arm32v7 .
 
+docker-push:
 	docker push $(DOCKER_AMD_TAG)
 
 	-docker manifest create \
@@ -115,3 +97,23 @@ docker-buildx:
 	docker manifest push $(DOCKER_TAG)
 
 	docker manifest inspect $(DOCKER_TAG)
+
+
+virtualenv-create:
+	python3.7 -m venv $(VIRTUALENV_DIR)
+	. $(VIRTUALENV_DIR)/bin/activate && \
+		pip install -r requirements.txt && \
+        pip install -r requirements-dev.txt && \
+        pip install -r requirements-test.txt && \
+        pip install .
+	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
+
+virtualenv-import:
+	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
+	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
+
+virtualenv-collectstatic:
+	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
+
+virtualenv-runserver:
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
