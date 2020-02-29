@@ -106,7 +106,7 @@ class TrackAdmin(admin.ModelAdmin):
     def image_tag(self, obj: Track):
         image = obj.images.first()
         if image:
-            url = urljoin(settings.MEDIA_ROOT, image.image.url)
+            url = urljoin(settings.MEDIA_ROOT, image.image_small.url)
             return format_html(f'<a href="{url}"><img src="{url}" width="64"/></a>')
 
     image_tag.short_description = "Image"  # type: ignore

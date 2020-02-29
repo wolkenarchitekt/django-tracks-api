@@ -9,12 +9,18 @@ from tracks_api.models import Track
 
 class TrackSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    image_small = serializers.SerializerMethodField()
     audio = serializers.SerializerMethodField()
 
     def get_image(self, object: Track):
         image = object.images.first()
         if image:
             return urljoin(settings.MEDIA_ROOT, image.image.url)
+
+    def get_image_small(self, object: Track):
+        image = object.images.first()
+        if image:
+            return urljoin(settings.MEDIA_ROOT, image.image_small.url)
 
     def get_audio(self, object: Track):
         if object.file:

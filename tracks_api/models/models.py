@@ -2,6 +2,9 @@ import logging
 
 from django.db import models
 
+from imagekit.models import ImageSpecField
+from pilkit.processors import ResizeToFill
+
 logger = logging.getLogger(__name__)
 
 
@@ -42,6 +45,12 @@ class TrackRating(models.Model):
 
 class TrackImage(models.Model):
     image = models.ImageField(upload_to="images")
+    image_small = ImageSpecField(
+        source="image",
+        processors=[ResizeToFill(64, 64)],
+        format="JPEG",
+        options={"quality": 60},
+    )
     track = models.ForeignKey("Track", on_delete=models.CASCADE, related_name="images")
     desc = models.TextField(blank=True, null=True)
 
