@@ -72,10 +72,6 @@ LOGGING = {
             "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
         },
         "simple": {"format": "%(levelname)s %(message)s"},
-        "sql": {
-            "()": "tracks_api.utils.SQLFormatter",
-            "format": "[%(duration).3f] %(statement)s",
-        },
     },
     "handlers": {
         "console": {
@@ -83,10 +79,9 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },
-        "sql": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "sql"},
     },
     "loggers": {
-        "": {"handlers": ["console"], "level": "INFO", "propagate": True},
+        "": {"handlers": ["console"], "level": "DEBUG", "propagate": True},
         "django.db.backends": {
             "level": "INFO",
             "handlers": ["console"],
