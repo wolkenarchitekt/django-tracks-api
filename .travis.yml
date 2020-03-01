@@ -1,5 +1,8 @@
 language: python
 
+env:
+  - DEV=1
+
 services:
   - docker
 
