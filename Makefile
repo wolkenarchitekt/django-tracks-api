@@ -7,15 +7,19 @@ DOCKER_VOLUMES = -v $(PWD):/app \
 	-v tracks_api_static:/static \
 	-v tracks_api_fixtures:/media/fixtures
 DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
-DOCKER_WO_PORTS = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_NAME)
-DOCKER_W_PORTS  = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_PORTS) $(DOCKER_NAME)
+DOCKERFILE = Dockerfile
+ifeq ($(DEV),1)
+	DOCKERFILE := Dockerfile.dev
+endif
+DOCKER_RUN_WO_PORTS = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_NAME)
+DOCKER_RUN_W_PORTS  = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_PORTS) $(DOCKER_NAME)
 
 DOCKER_TAG = rivamp/tracks-api:latest
 DOCKER_AMD_TAG = rivamp/tracks-api:latest-amd64
 DOCKER_ARM_TAG = rivamp/tracks-api:latest-arm32v7
 
 build:
-	docker build -t $(DOCKER_NAME) .
+	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .
 
 config:
 	@env | grep MUSIC_DIR
@@ -34,36 +38,36 @@ format:
 	black tracks_api
 
 shell:
-	$(DOCKER_WO_PORTS) bash
+	$(DOCKER_RUN_WO_PORTS) bash
 
 test:
-	$(DOCKER_WO_PORTS) pytest
+	$(DOCKER_RUN_WO_PORTS) pytest
 
 lint:
-	$(DOCKER_WO_PORTS) pytest --lint-only --flake8 --black --mypy
+	$(DOCKER_RUN_WO_PORTS) pytest --lint-only --flake8 --black --mypy
 
 import:
-	$(DOCKER_WO_PORTS) python manage.py import /media/music
+	$(DOCKER_RUN_WO_PORTS) python manage.py import /media/music
 
 migrate:
-	$(DOCKER_WO_PORTS) bash -c "python manage.py makemigrations \
+	$(DOCKER_RUN_WO_PORTS) bash -c "python manage.py makemigrations \
 		&& python manage.py migrate \
 		&& python manage.py create_adminuser"
 
 collectstatic:
-	$(DOCKER_W_PORTS) python manage.py collectstatic --noinput
+	$(DOCKER_RUN_W_PORTS) python manage.py collectstatic --noinput
 
 runserver:
-	$(DOCKER_W_PORTS) python manage.py runserver 0.0.0.0:8000
+	$(DOCKER_RUN_W_PORTS) python manage.py runserver 0.0.0.0:8000
 
 django-shell:
-	$(DOCKER_WO_PORTS) python manage.py shell_plus
+	$(DOCKER_RUN_WO_PORTS) python manage.py shell_plus
 
 django-urls:
-	$(DOCKER_WO_PORTS) python manage.py show_urls
+	$(DOCKER_RUN_WO_PORTS) python manage.py show_urls
 
 sqlite:
-	$(DOCKER_WO_PORTS) sqlite3 $(TRACKS_DB)
+	$(DOCKER_RUN_WO_PORTS) sqlite3 $(TRACKS_DB)
 
 docker-buildx-setup:
 	-docker buildx rm mybuilder
@@ -80,7 +84,7 @@ docker-buildx-setup:
 		-O $(HOME)/.docker/cli-plugins/docker-buildx/buildx-v0.2.0.linux-arm-v7
 
 docker-build:
-	docker build -t $(DOCKER_AMD_TAG) -f Dockerfile .
+	docker build -t $(DOCKER_AMD_TAG) -f $(DOCKERFILE) .
 	docker buildx build \
 		--push \
 		--platform linux/arm/v7 \
