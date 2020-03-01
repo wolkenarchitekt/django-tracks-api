@@ -18,9 +18,9 @@ endif
 DOCKER_RUN_WO_PORTS = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_NAME)
 DOCKER_RUN_W_PORTS  = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_PORTS) $(DOCKER_NAME)
 
-DOCKER_TAG = rivamp/tracks-api:latest
-DOCKER_AMD_TAG = rivamp/tracks-api:latest-amd64
-DOCKER_ARM_TAG = rivamp/tracks-api:latest-arm32v7
+DOCKER_TAG = riviamp/tracks-api:latest
+DOCKER_AMD_TAG = riviamp/tracks-api:latest-amd64
+DOCKER_ARM_TAG = riviamp/tracks-api:latest-arm32v7
 
 build:
 	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .

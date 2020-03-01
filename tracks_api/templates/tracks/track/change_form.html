@@ -7,7 +7,7 @@
 		event.preventDefault();
 		document.getElementById("track_name").textContent = track_name;
 
-		let audio = document.getElementById("rivamp_audio");
+		let audio = document.getElementById("riviamp_audio");
 		audio.src = url;
 		audio.play();
 	}
@@ -19,7 +19,7 @@
 {{  block.super }}
 <div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: white;">
     <p id="track_name"></p>
-    <audio style="width: 100%;" id="rivamp_audio" controls>
+    <audio style="width: 100%;" id="riviamp_audio" controls>
 </audio>
 </div>
 {% endblock %}
