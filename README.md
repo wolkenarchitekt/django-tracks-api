@@ -1,6 +1,6 @@
 # django-tracks
 
-[![Build Status](https://travis-ci.com/ifischer/django-tracks-api.svg?branch=master)](https://travis-ci.com/ifischer/django-tracks-api)
+[![Build Status](https://travis-ci.com/wolkenarchitekt/django-tracks-api.svg?branch=master)](https://travis-ci.com/wolkenarchitekt/django-tracks-api)
 
 A Django based REST API for your music tracks
 
