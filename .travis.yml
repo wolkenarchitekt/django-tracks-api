@@ -7,7 +7,7 @@ services:
   - docker
 
 before_install:
-  - make build lint
+  - make build
 
 script:
-  - make test
+  - make lint test
