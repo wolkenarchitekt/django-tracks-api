@@ -87,5 +87,10 @@ LOGGING = {
             "handlers": ["console"],
             "propagate": False,
         },
+        "asyncio": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        }
     },
 }
