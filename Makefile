@@ -1,5 +1,9 @@
 include Makefile.h
 
+ifeq ($(MUSIC_DIR),"")
+	MUSIC_DIR = $(PWD)/music
+endif
+
 DOCKER_VOLUMES = -v $(PWD):/app \
 	-v $(MUSIC_DIR):/media/music \
 	-v tracks_api_images:/media/images \
