@@ -50,6 +50,26 @@ test:
 lint:
 	$(DOCKER_RUN_WO_PORTS) pytest --lint-only --flake8 --black --mypy
 
+virtualenv-create:
+	python3.7 -m venv $(VIRTUALENV_DIR)
+	. $(VIRTUALENV_DIR)/bin/activate && \
+		pip install --upgrade pip setuptools && \
+		pip install -r requirements.txt && \
+        pip install -r requirements-dev.txt && \
+        pip install -r requirements-test.txt && \
+        pip install .
+	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
+
+virtualenv-import:
+	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
+	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
+
+virtualenv-collectstatic:
+	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
+
+virtualenv-runserver:
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
+
 import:
 	$(DOCKER_RUN_WO_PORTS) python manage.py import /media/music
 
