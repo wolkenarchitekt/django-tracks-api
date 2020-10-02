@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from tracks_api.tracks_import import import_tracks_to_db
@@ -20,6 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logging.basicConfig(level=logging.INFO)
         for music_dir in options["music-dirs"]:
+            music_dir = os.path.expanduser(music_dir)
             if not os.path.isdir(music_dir):
                 logger.warning(f"Path not found: {music_dir}")
                 sys.exit(1)
