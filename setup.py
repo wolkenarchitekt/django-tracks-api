@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name="django-tracks",
-    version="0.0.1",
+    version="0.0.2",
     description="Manage your music tracks",
     long_description=read("README.md"),
     license="GPL",
