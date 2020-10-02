@@ -14,6 +14,7 @@ DOCKER_PORTS = -p $(DJANGO_TRACKS_API_PORT):8000
 DOCKERFILE = Dockerfile
 ifeq ($(DEV),1)
 	DOCKERFILE := Dockerfile.dev
+	DOCKER_NAME := $(DOCKER_NAME)_dev
 endif
 DOCKER_RUN_WO_PORTS = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_NAME)
 DOCKER_RUN_W_PORTS  = docker run $(ENV_FILES) --user $(UID):$(GID) $(DOCKER_VOLUMES) -it --rm $(DOCKER_PORTS) $(DOCKER_NAME)
@@ -22,75 +23,53 @@ DOCKER_TAG = riviamp/tracks-api:latest
 DOCKER_AMD_TAG = riviamp/tracks-api:latest-amd64
 DOCKER_ARM_TAG = riviamp/tracks-api:latest-arm32v7
 
-build:
-	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .
-
 config:
 	@env | grep MUSIC_DIR
 	@env | grep DOCKER_*
 	@env | grep TRACKS_DB_FILE
 
-
 clean:
 	find . \! -user $(USER) -exec sudo chown $(USER) {} \;
 	-docker stop $(DOCKER_NAME)
 	-docker rm $(DOCKER_NAME)
-	rm -rf $(TRACKS_DB) .venv build dist django_tracks.egg-info .mypy_cache .pytest_cache
+	rm -rf $(TRACKS_DB) $(VIRTUALENV_DIR) build dist django_tracks.egg-info .mypy_cache .pytest_cache
 	rm -f tracks_api/migrations/0*.py
 
-format:
-	black tracks_api
+docker-build:
+	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .
 
-shell:
+docker-shell:
 	$(DOCKER_RUN_WO_PORTS) bash
 
-test:
+docker-test:
+	$(MAKE) docker-build
 	$(DOCKER_RUN_WO_PORTS) pytest
 
-lint:
+docker-lint:
+	$(MAKE) docker-build
 	$(DOCKER_RUN_WO_PORTS) pytest --lint-only --flake8 --black --mypy
 
-virtualenv-create:
-	python3.7 -m venv $(VIRTUALENV_DIR)
-	. $(VIRTUALENV_DIR)/bin/activate && \
-		pip install --upgrade pip setuptools && \
-		pip install -r requirements.txt && \
-        pip install -r requirements-dev.txt && \
-        pip install -r requirements-test.txt && \
-        pip install .
-	@echo "Activate virtualenv:\n. $(VIRTUALENV_DIR)/bin/activate"
-
-virtualenv-import:
-	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
-	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
-
-virtualenv-collectstatic:
-	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
-
-virtualenv-runserver:
-	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
-
-import:
+docker-import:
 	$(DOCKER_RUN_WO_PORTS) python manage.py import /media/music
 
-migrate:
+docker-migrate:
 	$(DOCKER_RUN_WO_PORTS) bash -c "python manage.py makemigrations \
 		&& python manage.py migrate \
 		&& python manage.py create_adminuser"
 
-collectstatic:
+docker-collectstatic:
 	$(DOCKER_RUN_W_PORTS) python manage.py collectstatic --noinput
 
-runserver:
+docker-runserver:
 	$(DOCKER_RUN_W_PORTS) python manage.py runserver 0.0.0.0:8000
 
-django-shell:
+docker-django-shell:
 	$(DOCKER_RUN_WO_PORTS) python manage.py shell_plus
 
-django-urls:
+docker-django-urls:
 	$(DOCKER_RUN_WO_PORTS) python manage.py show_urls
 
-sqlite:
+docker-sqlite:
 	$(DOCKER_RUN_WO_PORTS) sqlite3 $(TRACKS_DB)
 
 docker-buildx-setup:
@@ -107,7 +86,7 @@ docker-buildx-setup:
 	wget https://github.com/docker/buildx/releases/download/v0.2.0/buildx-v0.2.0.linux-arm-v7 \
 		-O $(HOME)/.docker/cli-plugins/docker-buildx/buildx-v0.2.0.linux-arm-v7
 
-docker-build:
+docker-buildx:
 	docker build -t $(DOCKER_AMD_TAG) -f $(DOCKERFILE) .
 	docker buildx build \
 		--push \
@@ -138,10 +117,18 @@ virtualenv-create:
 
 virtualenv-import:
 	# Create symbolic link of your music to media/music, or set different MEDIA_ROOT
-	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import media/music
+	. $(VIRTUALENV_DIR)/bin/activate && python manage.py import $$MUSIC_DIR
 
 virtualenv-collectstatic:
 	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
 
 virtualenv-runserver:
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
+
+virtualenv-migrate:
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py makemigrations
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py migrate
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py migrate --database tracks
+
+virtualenv-format:
+	. $(VIRTUALENV_DIR)/bin/activate && black tracks_api
