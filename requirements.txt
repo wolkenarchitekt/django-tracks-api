@@ -1,9 +1,9 @@
-Django==3.0.3
+Django==3.0.7
 django-imagekit==4.0.2
 djangorestframework==3.11.0
 gunicorn==19.9.0
 mutagen==1.43
-Pillow==7.0.0
+Pillow==7.1.0
 
 # Mediafile fork with popm
 git+git://github.com/wolkenarchitekt/mediafile.git#egg=mediafile
