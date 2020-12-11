@@ -1,4 +1,4 @@
-FROM python:3.7.6-slim
+FROM python:3.9.1-slim
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONUNBUFFERED true

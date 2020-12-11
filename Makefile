@@ -23,6 +23,8 @@ DOCKER_TAG = riviamp/tracks-api:latest
 DOCKER_AMD_TAG = riviamp/tracks-api:latest-amd64
 DOCKER_ARM_TAG = riviamp/tracks-api:latest-arm32v7
 
+PYTHON_VERSION = 3.9
+
 config:
 	@env | grep MUSIC_DIR
 	@env | grep DOCKER_*
@@ -107,7 +109,7 @@ docker-push:
 
 
 virtualenv-create:
-	python3.7 -m venv $(VIRTUALENV_DIR)
+	python$(PYTHON_VERSION) -m venv $(VIRTUALENV_DIR)
 	. $(VIRTUALENV_DIR)/bin/activate && \
 		pip install -r requirements.txt && \
         pip install -r requirements-dev.txt && \
