@@ -27,11 +27,11 @@ jobs:
 
     - name: Run flake8
       run: |
-        flake8 django_tracks_api
+        flake8 tracks_api
 
     - name: Run mypy
       run: |
-        mypy django_tracks_api
+        mypy tracks_api
 
     - name: Run black
       run: |
