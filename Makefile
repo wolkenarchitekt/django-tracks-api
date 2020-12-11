@@ -43,6 +43,9 @@ upgrade-requirements:
 		pur -r requirements-dev.txt && \
 		pur -r requirements-test.txt
 
+pypi-convert-readme:
+	pandoc --from=markdown --to=rst --output=README.rst README.md
+
 docker-build:
 	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .
 

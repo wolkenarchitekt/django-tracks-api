@@ -11,7 +11,7 @@ setup(
     name="django-tracks",
     version="0.0.2",
     description="Manage your music tracks",
-    long_description=read("README.md"),
+    long_description=read("README.rst"),
     license="GPL",
     author="Ingo Fischer",
     author_email="mail@ingofischer.de",
