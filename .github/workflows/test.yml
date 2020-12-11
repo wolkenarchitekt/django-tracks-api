@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9]
+        python-version: [ '3.9.1' ]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,15 +27,15 @@ jobs:
 
     - name: Run flake8
       run: |
-        flake8 traktor_nml_utils
+        flake8 django_tracks_api
 
     - name: Run mypy
       run: |
-        mypy traktor_nml_utils
+        mypy django_tracks_api
 
     - name: Run black
       run: |
-        black --check --exclude traktor_nml_utils/models/ traktor_nml_utils tests/
+        black --check --exclude tests/
 
     - name: Twine check
       run: |
