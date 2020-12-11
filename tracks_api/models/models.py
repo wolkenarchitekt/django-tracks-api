@@ -10,7 +10,7 @@ from pilkit.processors import ResizeToFill
 logger = logging.getLogger(__name__)
 
 
-local_storage = FileSystemStorage(location=settings.MUSIC_DIR)
+local_storage = FileSystemStorage(location=settings.MEDIA_ROOT)
 
 
 class Track(models.Model):

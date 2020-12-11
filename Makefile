@@ -37,6 +37,12 @@ clean:
 	rm -rf $(TRACKS_DB) $(VIRTUALENV_DIR) build dist django_tracks.egg-info .mypy_cache .pytest_cache
 	rm -f tracks_api/migrations/0*.py
 
+upgrade-requirements:
+	. $(VIRTUALENV_DIR)/bin/activate && \
+		pur -r requirements.txt && \
+		pur -r requirements-dev.txt && \
+		pur -r requirements-test.txt
+
 docker-build:
 	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .
 
@@ -111,6 +117,7 @@ docker-push:
 virtualenv-create:
 	python$(PYTHON_VERSION) -m venv $(VIRTUALENV_DIR)
 	. $(VIRTUALENV_DIR)/bin/activate && \
+		pip install --upgrade pip setuptools && \
 		pip install -r requirements.txt && \
         pip install -r requirements-dev.txt && \
         pip install -r requirements-test.txt && \
@@ -128,9 +135,13 @@ virtualenv-runserver:
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
 
 virtualenv-migrate:
+	mkdir -p db
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py makemigrations
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py migrate
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py migrate --database tracks
 
 virtualenv-format:
 	. $(VIRTUALENV_DIR)/bin/activate && black tracks_api
+
+virtualenv-createadminuser:
+	. $(VIRTUALENV_DIR)/bin/activate && python manage.py create_adminuser

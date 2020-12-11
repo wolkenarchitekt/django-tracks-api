@@ -1,33 +1,29 @@
 import datetime
 import logging
 import os
-import pathlib
+from pathlib import Path
 
 import mediafile
-from django.conf import settings
 from django.core.files.base import ContentFile
-
 from tracks_api.models import Track, TrackImage, TrackRating
-from tracks_api.utils import UmaskNamedTemporaryFile, scantree
+from tracks_api.utils import UmaskNamedTemporaryFile
 
 logger = logging.getLogger(__name__)
 
 
-def import_track_to_db(file: os.DirEntry):
+def import_track_to_db(file: Path):
     """Import track to database using mediafile"""
-    rel_file_path = os.path.relpath(file, settings.MEDIA_ROOT)
-
     try:
-        mf = mediafile.MediaFile(file.path)
+        mf = mediafile.MediaFile(file)
     except (mediafile.FileTypeError, mediafile.UnreadableFileError):
-        logger.debug(f"Error reading tags from file '{file.path}'")
+        logger.debug(f"Error reading tags from file '{file}'")
         return
 
-    mtime = os.path.getmtime(file.path)
+    mtime = os.path.getmtime(file)
     mtime_timestamp = datetime.datetime.fromtimestamp(mtime)
 
     track, created = Track.objects.update_or_create(
-        file=rel_file_path,
+        file=file,
         artist=mf.artist,
         title=mf.title,
         comment=mf.comments,
@@ -67,9 +63,9 @@ def import_track_to_db(file: os.DirEntry):
         track.save(update_fields=["file_mtime"])
 
 
-def import_tracks_to_db(music_dir: pathlib.Path):
+def import_tracks_to_db(music_dir: Path):
     """Import all tracks from given path"""
-    files = [file for file in scantree(music_dir)]
+    files = [file for file in music_dir.glob("**/*")]
 
     if not files:
         logger.warning(f"No files found in dir: {music_dir}")
