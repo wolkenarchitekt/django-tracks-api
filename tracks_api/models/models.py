@@ -21,7 +21,7 @@ class Track(models.Model):
     title = models.TextField(blank=True, null=True)
     bpm = models.IntegerField(blank=True, null=True)
     key = models.TextField(blank=True, null=True)  # 1-12 + d/m
-    file = models.FileField(storage=local_storage)
+    file = models.TextField(blank=True, null=True)
     duration = models.FloatField(blank=True, null=True)
     file_mtime = models.DateTimeField(null=True)
     date_created = models.DateTimeField(auto_now_add=True)
