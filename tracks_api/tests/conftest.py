@@ -4,10 +4,9 @@ import tempfile
 from pathlib import Path
 from typing import List
 
-from PIL import Image
-
 import pytest
 from django.conf import settings
+from PIL import Image
 from pytest_black import BlackItem
 from pytest_flake8 import Flake8Item
 from pytest_mypy import MypyItem
@@ -58,13 +57,12 @@ def mp3_file(request, tmpdir_factory) -> Path:
 @pytest.fixture(scope="session")
 def mp3_files(request, tmpdir_factory) -> List[Path]:
     """ Generate multiple MP3 files """
-    tmpdir = tmpdir_factory.mktemp(settings.MEDIA_ROOT)
     count = request.param
     paths = []
-    for _ in range(count):
-        tf = tempfile.NamedTemporaryFile(dir="/", suffix=".mp3")
-        path = Path(tmpdir.join(tf.name))
-        paths.append(create_mp3(path=path))
+    tmpdir = tmpdir_factory.mktemp("data")
+    for i in range(count):
+        fn = tmpdir / f"{i}.mp3"
+        paths.append(create_mp3(path=fn))
     return paths
 
 

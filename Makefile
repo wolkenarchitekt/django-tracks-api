@@ -148,3 +148,6 @@ virtualenv-format:
 
 virtualenv-createadminuser:
 	. $(VIRTUALENV_DIR)/bin/activate && python manage.py create_adminuser
+
+virtualenv-test:
+	. $(VIRTUALENV_DIR)/bin/activate && pytest
