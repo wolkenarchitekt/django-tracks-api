@@ -46,6 +46,10 @@ upgrade-requirements:
 pypi-convert-readme:
 	pandoc --from=markdown --to=rst --output=README.rst README.md
 
+act:
+	docker build -f Dockerfile.act -t ubuntu-builder .
+	act -P ubuntu-latest=ubuntu-builder
+
 docker-build:
 	docker build -t $(DOCKER_NAME) -f $(DOCKERFILE) .
 
