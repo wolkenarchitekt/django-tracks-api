@@ -26,6 +26,7 @@ class Track(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     bitrate = models.IntegerField(blank=True, null=True)
+    import_date = models.DateTimeField(null=True)
 
     class Meta:
         db_table = "track"

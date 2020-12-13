@@ -62,6 +62,7 @@ class TrackAdmin(admin.ModelAdmin):
         "rating_formatted",
         "duration_formatted",
         "bitrate_formatted",
+        "import_date_formatted",
         "file",
     )
 
@@ -72,11 +73,18 @@ class TrackAdmin(admin.ModelAdmin):
     change_form_template = "tracks/track/change_form.html"
     change_list_template = "tracks/track/change_list.html"
     readonly_fields = ("key", "duration")
-    fields = ("artist", "title", "album", "duration_formatted", "key")
+    fields = ("artist", "title", "album", "duration_formatted", "key", "import_date")
     inlines = [TrackImageInline]
 
     def get_ordering(self, request):
-        return ["-file_mtime"]
+        return ["-import_date"]
+
+    def import_date_formatted(self, obj):
+        if obj.import_date:
+            return obj.import_date.strftime("%Y/%m/%d")
+
+    import_date_formatted.short_description = "Import Date"  # type: ignore
+    import_date_formatted.admin_order_field = "import_date"
 
     def duration_formatted(self, obj):
         td = datetime.timedelta(seconds=int(obj.duration))
