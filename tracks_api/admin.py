@@ -97,7 +97,7 @@ class TrackAdmin(admin.ModelAdmin):
     rating_formatted.short_description = "Rating"  # type: ignore
 
     def audio_tag(self, obj):
-        url = f"/music{obj.file.url}"
+        url = f"{obj.file.url}"
         params = f"play(`{url}`, `{obj.artist} - {obj.title}`"
         return format_html(f"""<button onclick="{params}, event)">Play</button>""")
 

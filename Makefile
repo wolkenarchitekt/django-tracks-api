@@ -162,3 +162,6 @@ virtualenv-createadminuser:
 
 virtualenv-test:
 	. $(VIRTUALENV_DIR)/bin/activate && pytest
+
+virtualenv-shell:
+	. $(VIRTUALENV_DIR)/bin/activate && python manage.py shell_plus

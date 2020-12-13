@@ -3,7 +3,7 @@ import datetime
 import logging
 import os
 from pathlib import Path
-
+from django.core.files import File
 import mediafile
 from django.core.files.base import ContentFile
 from tracks_api.models import Track, TrackImage, TrackRating
@@ -24,7 +24,7 @@ def import_track_to_db(file: Path):
     mtime_timestamp = datetime.datetime.fromtimestamp(mtime)
 
     track, created = Track.objects.update_or_create(
-        file=str(file.relative_to(settings.MUSIC_ROOT)),
+        file=str(file),
         artist=mf.artist,
         title=mf.title,
         comment=mf.comments,
@@ -66,7 +66,7 @@ def import_track_to_db(file: Path):
 
 def import_tracks_to_db(music_dir: Path):
     """Import all tracks from given path"""
-    files = [file for file in music_dir.glob("**/*")]
+    files = [file for file in music_dir.glob("**/*.mp3") if file.is_file()]
 
     if not files:
         logger.warning(f"No files found in dir: {music_dir}")
