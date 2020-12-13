@@ -23,10 +23,8 @@ db/
 # Local env files
 .env.local
 
-# Virtualenv dirs
-media/music
-media/images
-tracks.sqlite
+# Sample music
+music/
 
 # Coverage
 .coverage
