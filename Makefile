@@ -24,6 +24,7 @@ DOCKER_AMD_TAG = riviamp/tracks-api:latest-amd64
 DOCKER_ARM_TAG = riviamp/tracks-api:latest-arm32v7
 
 PYTHON_VERSION = 3.9
+VIRTUALENV_DIR = .venv
 
 config:
 	@env | grep MUSIC_DIR
@@ -36,6 +37,12 @@ clean:
 	-docker rm $(DOCKER_NAME)
 	rm -rf $(TRACKS_DB) $(VIRTUALENV_DIR) build dist django_tracks.egg-info .mypy_cache .pytest_cache
 	rm -f tracks_api/migrations/0*.py
+
+clean-db:
+	rm -f db/*.sqlite
+	rm -f tracks_api/migrations/0*.py
+	$(MAKE) virtualenv-migrate
+	$(MAKE) virtualenv-createadminuser
 
 upgrade-requirements:
 	. $(VIRTUALENV_DIR)/bin/activate && \

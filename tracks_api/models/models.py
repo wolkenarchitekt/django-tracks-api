@@ -1,16 +1,15 @@
 import logging
 
-from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+from django.db import models
 from imagekit.models import ImageSpecField
 from pilkit.processors import ResizeToFill
 
 logger = logging.getLogger(__name__)
 
 
-local_storage = FileSystemStorage(location=settings.MEDIA_ROOT)
+local_storage = FileSystemStorage(location=settings.MUSIC_ROOT, base_url="/music")
 
 
 class Track(models.Model):
@@ -21,7 +20,7 @@ class Track(models.Model):
     title = models.TextField(blank=True, null=True)
     bpm = models.IntegerField(blank=True, null=True)
     key = models.TextField(blank=True, null=True)  # 1-12 + d/m
-    file = models.TextField(blank=True, null=True)
+    file = models.FileField(storage=local_storage)
     duration = models.FloatField(blank=True, null=True)
     file_mtime = models.DateTimeField(null=True)
     date_created = models.DateTimeField(auto_now_add=True)

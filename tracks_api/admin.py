@@ -1,4 +1,5 @@
 import datetime
+from pathlib import Path
 from urllib.parse import urljoin
 
 from django import forms
@@ -7,7 +8,6 @@ from django.contrib import admin
 from django.db import models
 from django.forms import widgets
 from django.utils.html import format_html
-
 from tracks_api.models import Track, TrackImage
 
 
@@ -97,7 +97,7 @@ class TrackAdmin(admin.ModelAdmin):
     rating_formatted.short_description = "Rating"  # type: ignore
 
     def audio_tag(self, obj):
-        url = urljoin(settings.MEDIA_ROOT, obj.file.url)
+        url = f"/music{obj.file.url}"
         params = f"play(`{url}`, `{obj.artist} - {obj.title}`"
         return format_html(f"""<button onclick="{params}, event)">Play</button>""")
 

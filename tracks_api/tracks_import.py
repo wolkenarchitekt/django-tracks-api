@@ -1,3 +1,4 @@
+from django.conf import settings
 import datetime
 import logging
 import os
@@ -23,7 +24,7 @@ def import_track_to_db(file: Path):
     mtime_timestamp = datetime.datetime.fromtimestamp(mtime)
 
     track, created = Track.objects.update_or_create(
-        file=file,
+        file=str(file.relative_to(settings.MUSIC_ROOT)),
         artist=mf.artist,
         title=mf.title,
         comment=mf.comments,
