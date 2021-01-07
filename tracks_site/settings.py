@@ -65,7 +65,8 @@ STATIC_ROOT = os.environ.get("STATIC_ROOT", os.path.join(BASE_DIR, "static"))
 # MEDIA_ROOT = os.environ.get("MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
 
 MUSIC_URL = "/music/"
-MUSIC_ROOT = os.environ["MUSIC_ROOT"]
+MUSIC_ROOT = os.environ.get("MUSIC_ROOT", None)
+
 # MEDIA_ROOT = os.environ.get("MEDIA_ROOT", os.path.join(BASE_DIR, "media"))
 
 # MUSIC_DIR = os.environ.get("MUSIC_DIR", None)
@@ -73,9 +74,10 @@ MUSIC_ROOT = os.environ["MUSIC_ROOT"]
 #     MUSIC_DIR = os.path.expanduser(MUSIC_DIR)
 #     MEDIA_ROOT = MUSIC_DIR
 
-STATICFILES_DIRS = [
-    MUSIC_ROOT,
-]
+if MUSIC_ROOT:
+    STATICFILES_DIRS = [
+        MUSIC_ROOT,
+    ]
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
