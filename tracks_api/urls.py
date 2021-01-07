@@ -14,6 +14,6 @@ urlpatterns = [path("tracks/", include(router.urls)), path("admin/", admin.site.
 
 # Serve static content with Django during development
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # type: ignore
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.MUSIC_URL, document_root=settings.MUSIC_ROOT)

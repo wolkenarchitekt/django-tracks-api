@@ -1,21 +1,22 @@
 import datetime
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class TrackEntity:
-    artist: str
-    title: str
-    comment: str
-    album: str
-    bpm: int
-    key: str
-    file: str
-    duration: float
-    file_mtime: datetime.datetime
+    artist: Optional[str]
+    title: Optional[str]
+    comment: Optional[str]
+    album: Optional[str]
+    bpm: Optional[int]
+    key: Optional[str]
+    file: Optional[str]
+    duration: Optional[float]
+    file_mtime: Optional[datetime.datetime]
     date_created = datetime.datetime
     date_updated = datetime.datetime
-    bitrate = int
+    bitrate = Optional[int]
 
 
 @dataclass

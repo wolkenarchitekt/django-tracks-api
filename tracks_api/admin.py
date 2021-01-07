@@ -1,5 +1,4 @@
 import datetime
-from pathlib import Path
 from urllib.parse import urljoin
 
 from django import forms
@@ -84,7 +83,7 @@ class TrackAdmin(admin.ModelAdmin):
             return obj.import_date.strftime("%Y/%m/%d")
 
     import_date_formatted.short_description = "Import Date"  # type: ignore
-    import_date_formatted.admin_order_field = "import_date"
+    import_date_formatted.admin_order_field = "import_date"  # type: ignore
 
     def duration_formatted(self, obj):
         td = datetime.timedelta(seconds=int(obj.duration))

@@ -165,3 +165,6 @@ virtualenv-test:
 
 virtualenv-shell:
 	. $(VIRTUALENV_DIR)/bin/activate && python manage.py shell_plus
+
+virtualenv-lint:
+	. $(VIRTUALENV_DIR)/bin/activate && pytest --lint-only --flake8 --black --mypy

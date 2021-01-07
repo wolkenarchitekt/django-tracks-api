@@ -1,30 +1,43 @@
-from django.conf import settings
 import datetime
 import logging
 import os
 from pathlib import Path
-from django.core.files import File
+
 import mediafile
 from django.core.files.base import ContentFile
+from mutagen.id3 import ID3
 from tracks_api.models import Track, TrackImage, TrackRating
 from tracks_api.utils import UmaskNamedTemporaryFile
+
+GEOB_OPENTUNES_IMPORT_DATE = "opentunes.import_date"
 
 logger = logging.getLogger(__name__)
 
 
-def import_track_to_db(file: Path):
+def get_geob_date(path: Path):
+    id3 = ID3(path)
+    geob_data = id3.getall("GEOB")
+    geob_list = [
+        x.data.decode() for x in geob_data if x.desc == GEOB_OPENTUNES_IMPORT_DATE
+    ]
+    if geob_list:
+        import_date = geob_list[0]
+        return datetime.datetime.strptime(import_date, "%Y-%m-%d").date()
+
+
+def import_track_to_db(path: Path):
     """Import track to database using mediafile"""
     try:
-        mf = mediafile.MediaFile(file)
+        mf = mediafile.MediaFile(path)
     except (mediafile.FileTypeError, mediafile.UnreadableFileError):
-        logger.debug(f"Error reading tags from file '{file}'")
+        logger.debug(f"Error reading tags from file '{path}'")
         return
 
-    mtime = os.path.getmtime(file)
+    mtime = os.path.getmtime(path)
     mtime_timestamp = datetime.datetime.fromtimestamp(mtime)
 
     track, created = Track.objects.update_or_create(
-        file=str(file),
+        file=str(path),
         artist=mf.artist,
         title=mf.title,
         comment=mf.comments,
@@ -33,6 +46,7 @@ def import_track_to_db(file: Path):
         duration=mf.length,
         bitrate=mf.bitrate,
         album=mf.album,
+        import_date=get_geob_date(path),
     )
     track_was_updated = track.file_mtime and track.file_mtime < mtime_timestamp
     track.file_mtime = mtime_timestamp
