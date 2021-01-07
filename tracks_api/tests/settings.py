@@ -40,3 +40,6 @@ TEMPLATES = [
         },
     }
 ]
+
+MUSIC_URL = "/music/"
+MUSIC_ROOT = "tests/fixtures/music"
