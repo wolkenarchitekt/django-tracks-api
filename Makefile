@@ -127,7 +127,6 @@ docker-push:
 
 	docker manifest inspect $(DOCKER_TAG)
 
-
 virtualenv-create:
 	python$(PYTHON_VERSION) -m venv $(VIRTUALENV_DIR)
 	. $(VIRTUALENV_DIR)/bin/activate && \
@@ -146,7 +145,7 @@ virtualenv-collectstatic:
 	STATIC_ROOT=static/ . $(VIRTUALENV_DIR)/bin/activate && python manage.py collectstatic --noinput
 
 virtualenv-runserver:
-	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver
+	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py runserver 0.0.0.0:8000
 
 virtualenv-migrate:
 	mkdir -p db
