@@ -31,3 +31,7 @@ music/
 
 # Generated static files
 static/
+
+# Temporary files
+CACHE
+images/
