@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-striped">
+    <tr>
+        <th style="width:0px;">Image</th>
+        <th>Artist</th>
+        <th>Title</th>
+        <th>BPM</th>
+        <th>Key</th>
+    </tr>
+    {% for track in object_list %}
+    <tr style="height: 90px;">
+        <td>
+            <a href="{{ track.get_absolute_url }}">
+                <img src="{{ track.images.first.image.url }}" width="64">
+            </a>
+        </td>
+        <td>{{ track.artist }}</td>
+        <td>{{ track.title }}</td>
+        <td>{{ track.bpm }}</td>
+        <td>{{ track.key }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

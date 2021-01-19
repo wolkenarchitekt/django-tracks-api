@@ -1,0 +1,28 @@
+<table>
+    <tr>
+        <th>Artist</th>
+        <td>{{ object.artist }}</td>
+    </tr>
+    <tr>
+        <th>Title</th>
+        <td>{{ object.title }}</td>
+    </tr>
+    <tr>
+        <th>BPM</th>
+        <td>{{ object.bpm }}</td>
+    </tr>
+    <tr>
+        <th>Key</th>
+        <td>{{ object.key }}</td>
+    </tr>
+    <tr>
+        <th>Import date</th>
+        <td>{{ object.import_date|date:"Y/m/d" }}</td>
+    </tr>
+{% for image in track.images.all %}
+    <img src="{{ image.url }}" width="400">
+{% endfor %}
+</table>
+{% for image_url in image_urls %}
+    <img src="{{ image_url }}" width="400">
+{% endfor %}

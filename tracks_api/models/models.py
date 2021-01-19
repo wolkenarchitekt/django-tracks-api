@@ -1,3 +1,4 @@
+from django.urls import reverse
 import logging
 
 from django.conf import settings
@@ -33,6 +34,9 @@ class Track(models.Model):
 
     def __repr__(self):
         return f"Artist: {self.artist}, Title: {self.title}"
+
+    def get_absolute_url(self):
+        return reverse('track-detail', args=[self.pk])
 
 
 class TrackRating(models.Model):
