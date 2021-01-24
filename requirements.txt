@@ -1,11 +1,11 @@
-Django==3.1.4
+Django==3.1.5
 django-imagekit==4.0.2
 djangorestframework==3.12.2
 django-cors-headers==3.6.0
-google-api-python-client==1.7.11
+google-api-python-client==1.12.8
 gunicorn==20.0.4
 mutagen==1.45.1
-Pillow==8.0.1
+Pillow==8.1.0
 
 # Mediafile fork with popm
 git+git://github.com/wolkenarchitekt/mediafile.git#egg=mediafile
