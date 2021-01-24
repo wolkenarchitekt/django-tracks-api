@@ -1,6 +1,6 @@
 # django-tracks
 
-![Python package](https://github.com/wolkenarchitekt/django-tracks-api/workflows/Python%20package/badge.svg?branch=master)
+![Python tests and linting](https://github.com/wolkenarchitekt/django-tracks-api/workflows/Python%20tests%20and%20linting/badge.svg)
 
 A Django based REST API for your music tracks
 
