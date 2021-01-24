@@ -23,7 +23,7 @@ DOCKER_TAG = riviamp/tracks-api:latest
 DOCKER_AMD_TAG = riviamp/tracks-api:latest-amd64
 DOCKER_ARM_TAG = riviamp/tracks-api:latest-arm32v7
 
-PYTHON_VERSION = 3.9
+PYTHON_VERSION = 3.8
 VIRTUALENV_DIR = .venv
 
 config:
