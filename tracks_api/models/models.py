@@ -1,9 +1,9 @@
-from django.urls import reverse
 import logging
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import models
+from django.urls import reverse
 from imagekit.models import ImageSpecField
 from pilkit.processors import ResizeToFill
 
@@ -36,7 +36,7 @@ class Track(models.Model):
         return f"Artist: {self.artist}, Title: {self.title}"
 
     def get_absolute_url(self):
-        return reverse('track-detail', args=[self.pk])
+        return reverse("track-detail", args=[self.pk])
 
 
 class TrackRating(models.Model):

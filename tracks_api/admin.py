@@ -7,6 +7,7 @@ from django.contrib import admin
 from django.db import models
 from django.forms import widgets
 from django.utils.html import format_html
+
 from tracks_api.models import Track, TrackImage
 
 
