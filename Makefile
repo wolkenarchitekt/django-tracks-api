@@ -153,8 +153,8 @@ virtualenv-migrate:
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py migrate
 	TRACKS_DB_FILE=db/tracks.sqlite . $(VIRTUALENV_DIR)/bin/activate && python manage.py migrate --database tracks
 
-virtualenv-format:
-	. $(VIRTUALENV_DIR)/bin/activate && black tracks_api
+virtualenv-autoformat:
+	. $(VIRTUALENV_DIR)/bin/activate && ./autoformat.sh .
 
 virtualenv-createadminuser:
 	. $(VIRTUALENV_DIR)/bin/activate && python manage.py create_adminuser

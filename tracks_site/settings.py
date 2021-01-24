@@ -29,7 +29,7 @@ DEFAULT_DB_FILE = os.environ.get(
 
 DATABASES = {
     "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": DEFAULT_DB_FILE},
-    "tracks": {"ENGINE": "django.db.backends.sqlite3", "NAME": TRACKS_DB_FILE}
+    "tracks": {"ENGINE": "django.db.backends.sqlite3", "NAME": TRACKS_DB_FILE},
 }
 
 MIDDLEWARE = [
@@ -116,6 +116,6 @@ LOGGING = {
             "level": "INFO",
             "handlers": ["console"],
             "propagate": False,
-        }
+        },
     },
 }

@@ -6,6 +6,7 @@ from pathlib import Path
 import mediafile
 from django.core.files.base import ContentFile
 from mutagen.id3 import ID3
+
 from tracks_api.models import Track, TrackImage, TrackRating
 from tracks_api.utils import UmaskNamedTemporaryFile
 
