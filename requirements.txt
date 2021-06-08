@@ -5,7 +5,7 @@ django-cors-headers==3.6.0
 google-api-python-client==1.12.8
 gunicorn==20.0.4
 mutagen==1.45.1
-Pillow==8.1.1
+Pillow==8.2.0
 
 # Mediafile fork with popm
 git+git://github.com/wolkenarchitekt/mediafile.git#egg=mediafile
